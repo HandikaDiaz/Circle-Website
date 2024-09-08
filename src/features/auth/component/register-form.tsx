@@ -1,13 +1,25 @@
 import {
+    Box,
+    Button,
     FormControl,
     Input,
-    Button,
-    Box,
-} from '@chakra-ui/react'
-import { useRegisterForm } from "../hooks/use-register-form";
+} from '@chakra-ui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { RegisterFormInput, registerSchema } from '../schemas/register';
+import { useForm } from 'react-hook-form';
+import { ErrorMessage } from '../schemas/error';
 
 export function RegisterForm() {
-    const { handleChange, handleSubmit } = useRegisterForm();
+    const { 
+        register, 
+        handleSubmit, 
+        formState : { errors }, } = useForm<RegisterFormInput>({
+            resolver : zodResolver(registerSchema)
+    });
+
+    function onSubmit(data : RegisterFormInput) {
+        console.log(data);
+    };
 
     return (
         <Box
@@ -18,6 +30,7 @@ export function RegisterForm() {
             textColor={'#FFFFFF'}
             justifyContent="center">
 
+            <form onSubmit={handleSubmit(onSubmit)}>
             <FormControl 
                 gap={'10px'} 
                 width={'300px'}
@@ -28,37 +41,37 @@ export function RegisterForm() {
                     type='text' 
                     width={'100%'}
                     height={'30px'}
-                    name='fullName' 
                     display={'block'}
                     borderRadius={'5px'}
-                    onChange={handleChange} 
                     placeholder='  Full Name'
+                    {...register('fullName')}
                     border={'1px solid #545454'}
                     backgroundColor={'transparent'}/>
+                    <ErrorMessage message={errors.fullName?.message} />
 
                 <Input 
                     type='email' 
-                    name='email' 
                     width={'100%'}
                     height={'30px'}
                     display={'block'}
                     borderRadius={'5px'}
                     placeholder='  Email'
-                    onChange={handleChange} 
+                    {...register('email')}
                     border={'0.1px solid #545454'}
                     backgroundColor={'transparent'}/>
+                    <ErrorMessage message={errors.email?.message}/>
 
                 <Input 
                     width={'100%'}
                     height={'30px'}
                     type='password' 
-                    name='password' 
                     display={'block'}
                     borderRadius={'5px'}
-                    onChange={handleChange} 
                     placeholder='  Password'
+                    {...register('password')}
                     border={'1px solid #545454'}
                     backgroundColor={'transparent'}/>
+                    <ErrorMessage message={errors.password?.message}/>
 
                 <Button
                     type='submit'
@@ -70,10 +83,10 @@ export function RegisterForm() {
                     cursor={'pointer'}
                     fontWeight={'bold'}
                     borderRadius={'15px'}
-                    onClick={handleSubmit}
                     backgroundColor={'#04A51E'}
                     _hover={{ backgroundColor: '#FFF', color: '#04A51E' }}>Create</Button>
             </FormControl>
+            </form>
         </Box>
     );
 }

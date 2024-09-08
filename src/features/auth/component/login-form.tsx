@@ -1,14 +1,27 @@
 import {
+    Box,
+    Button,
     FormControl,
     Input,
-    Button,
-    Box,
     Text
-} from '@chakra-ui/react'
-import { useRegisterForm } from "../hooks/use-register-form";
+} from '@chakra-ui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { LoginFormInput, loginSchema } from '../schemas/login';
+import { ErrorMessage } from '../schemas/error';
 
 export function LoginForm() {
-    const { handleChange, handleSubmit } = useRegisterForm();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }, } = useForm<LoginFormInput>({
+            resolver: zodResolver(loginSchema)
+        });
+
+    function onSubmit(data: LoginFormInput) {
+        console.log(data);
+    };
 
     return (
         <Box
@@ -19,60 +32,65 @@ export function LoginForm() {
             textColor={'#FFFFFF'}
             justifyContent="center">
 
-            <FormControl 
-                width={'300px'}
-                display={'flex'} 
-                flexDirection={'column'}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <FormControl
+                    width={'300px'}
+                    display={'flex'}
+                    flexDirection={'column'}>
 
-                <Input 
-                    mb={'10px'}
-                    type='email' 
-                    name='email' 
-                    width={'100%'}
-                    height={'28px'}
-                    display={'block'}
-                    borderRadius={'5px'}
-                    onChange={handleChange} 
-                    border={'1px solid #545454'}
-                    placeholder='  Email/Username'
-                    backgroundColor={'transparent'}/>
+                    <Input
+                        mb={'10px'}
+                        type='email'
+                        width={'100%'}
+                        height={'28px'}
+                        display={'block'}
+                        borderRadius={'5px'}
+                        {...register('email')}
+                        border={'1px solid #545454'}
+                        placeholder='  Email/Username'
+                        backgroundColor={'transparent'} />
+                        <ErrorMessage message={errors.email?.message}/>
 
-                <Input 
-                    width={'100%'}
-                    height={'28px'}
-                    type='password' 
-                    name='password' 
-                    display={'block'}
-                    borderRadius={'5px'}
-                    onChange={handleChange} 
-                    placeholder='  Password'
-                    border={'1px solid #545454'}
-                    backgroundColor={'transparent'}/>
+                    <Input
+                        my={'10px'}
+                        width={'100%'}
+                        height={'28px'}
+                        type='password'
+                        display={'block'}
+                        borderRadius={'5px'}
+                        placeholder='  Password'
+                        {...register('password')}
+                        border={'1px solid #545454'}
+                        backgroundColor={'transparent'} />
+                        <ErrorMessage message={errors.password?.message}/>
 
-                <Text 
-                    href="" 
-                    as={'a'} 
-                    my={'10px'}
-                    color={'white'}
-                    fontSize="small" 
-                    alignItems="end"
-                    display={"flex"}
-                    justifyContent={'end'}
-                    textDecoration={'none'}>Forgot password?</Text>
+                    <Link to={'/forgot'} style={{ textDecoration: 'none' }}>
+                        <Text
+                            href=""
+                            as={'a'}
+                            my={'5px'}
+                            color={'white'}
+                            fontSize="small"
+                            alignItems="end"
+                            display={"flex"}
+                            justifyContent={'end'}
+                            textDecoration={'none'}>Forgot password?</Text>
+                    </Link>
 
-                <Button
-                    width={'100%'}
-                    border={'none'}
-                    height={'30px'}
-                    fontSize={'15px'}
-                    color={'#FFFFFF'}
-                    cursor={'pointer'}
-                    fontWeight={'bold'}
-                    borderRadius={'15px'}
-                    onClick={handleSubmit}
-                    backgroundColor={'#04A51E'}
-                    _hover={{backgroundColor: '#FFFFFF', color: '#FFFFFF'}}>Login</Button>
-            </FormControl>
+                    <Button
+                        type='submit'
+                        width={'100%'}
+                        border={'none'}
+                        height={'30px'}
+                        fontSize={'15px'}
+                        color={'#FFFFFF'}
+                        cursor={'pointer'}
+                        fontWeight={'bold'}
+                        borderRadius={'15px'}
+                        backgroundColor={'#04A51E'}
+                        _hover={{ backgroundColor: '#FFFFFF', color: '#FFFFFF' }}>Login</Button>
+                </FormControl>
+            </form>
         </Box>
     );
 }

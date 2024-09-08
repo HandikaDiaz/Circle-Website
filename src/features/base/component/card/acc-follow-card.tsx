@@ -1,16 +1,18 @@
-import { Box, Button, Image, Spacer, Text } from "@chakra-ui/react";
+import { Box, Button, Image, Text } from "@chakra-ui/react";
+import { ButtonLink } from "../../link/link";
 
 
 export function AccFollowCard() {
     return (
         <Box 
             mt={'13px'}
-            bg={'#262626'} 
+            bg={'none'}
             display={'flex'} 
-            alignItems={'center'}>
+            alignItems={'center'}
+            justifyContent={'space-between'}>
                 <Box 
-                    bg={'#262626'}
                     display={'flex'} 
+                    bg={'none'}
                     alignItems={'center'} >
                     <Image
                             alt=''
@@ -21,24 +23,23 @@ export function AccFollowCard() {
                             borderRadius='500px'
                             src='https://bit.ly/dan-abramov' />
 
+                    <ButtonLink textDecoration={'none'} to={"/profile-people"} bg={'none'}>
                     <Text 
                         as={'p'} 
                         ms={'10px'} 
-                        bg={'#262626'} 
-                        color={'#FFFFFF'} 
+                        color={'nav.text'} 
                         fontSize={'12px'} 
                         fontWeight={'bold'}>Handika
                         <Text 
-                            bg={'#262626'} 
                             fontSize={'10px'} 
-                            color={'#909090'}>@Handika</Text>
+                            color={'nav.link'}>@Handika</Text>
                     </Text>
+                    </ButtonLink>
                 </Box>
-                <Spacer bg={'#262626'}/>
-                <Box bg={'#262626'}>
+                <Box bg={'none'}>
                     <Button
                         height={'28px'}
-                        color={'#FFFFFF'}
+                        color={'nav.text'}
                         fontSize={'10px'}
                         bg={'transparent'}
                         fontWeight={'700'}

@@ -1,4 +1,4 @@
-import { Box, Heading, Card } from "@chakra-ui/react";
+import { Box, Card, Heading } from "@chakra-ui/react";
 import { AccFollowCard } from "./acc-follow-card";
 import { AccFollowingCard } from "./acc-following-card";
 
@@ -11,16 +11,14 @@ export function SuggestionCard() {
             width={'90%'}
             borderRadius={'5px'}
             paddingBottom={'20px'}
-            backgroundColor={'#262626'}>
+            backgroundColor={'nav.background'}>
             <Box
                 mx={'auto'}
-                width={'90%'}
-                bg={'#262626'}>
+                width={'90%'}>
                 <Heading
-                    as='h3'
                     my={'15px'}
-                    bg={'#262626'}
-                    color={'#FFFFFF'}>Suggested for you</Heading>
+                    fontSize={'23px'}
+                    color={'nav.title2'}>Suggested for you</Heading>
                 <AccFollowCard/>
                 <AccFollowingCard/>
             </Box>

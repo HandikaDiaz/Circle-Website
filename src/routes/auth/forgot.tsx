@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { ForgotForm } from "../../features/auth/component/forgot-form";
 import { Box, Text } from '@chakra-ui/react'
 
@@ -41,11 +42,13 @@ export function ForgotRoute() {
                 alignItems="center" 
                 justifyContent="start">Already have an account?
 
+                <Link to={"/login"} style={{ textDecoration: 'none' }}>
                 <Text 
                     href="" 
                     as={'a'} 
                     color={'#04A51E'} 
                     textDecoration={'none'}>Login</Text>
+                </Link>
             </Text>
         </Box>
     )

@@ -1,7 +1,14 @@
-import { Box, Heading, HStack, Card, Button, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Card, Heading, HStack, Image, Text, useDisclosure } from "@chakra-ui/react";
+import React from "react";
+import { ButtonLink } from "../../link/link";
+import { ProfileModal } from "../modal/profile-modal";
 
 
 export function ProfileCard() {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const initialRef = React.useRef(null)
+    const finalRef = React.useRef(null)
+    
     return (
         <Card
             mx={'auto'}
@@ -9,27 +16,24 @@ export function ProfileCard() {
             width={'90%'}
             paddingBottom={'20px'}
             borderRadius={'5px'}
-            backgroundColor={'#262626'}>
+            backgroundColor={'nav.background'}>
             <Box
                 mx={'auto'}
-                width={'90%'}
-                bg={'#262626'}>
+                width={'90%'}>
                 <Heading
-                    as='h3'
-                    my={'15px'}
-                    bg={'#262626'}
-                    color={'#FFFFFF'}>My Profile</Heading>
+                    mb={'10px'}
+                    color={'nav.text'}>
+                    <ButtonLink color={'nav.title2'} bg={'none'} textDecoration={'none'} fontSize={'23px'} to={"/profile"}>My Profile</ButtonLink>
+                </Heading>
 
                 <Image
-                    borderRadius='10px'
-                    display={'block'}
                     width={'100%'}
                     height={'100px'}
-                    src='https://wallpapercave.com/wp/wp4566576.jpg'
-                    alt=''/>
+                    display={'block'}
+                    borderRadius='10px'
+                    src='https://wallpapercave.com/wp/wp4566576.jpg'/>
 
                 <Image
-                    alt=''
                     top={'115px'}
                     left={'30px'}
                     boxSize='73px'
@@ -44,8 +48,9 @@ export function ProfileCard() {
                     top={'159px'}
                     right={'20px'}
                     height={'28px'}
-                    color={'#FFFFFF'}
+                    onClick={onOpen}
                     fontSize={'10px'}
+                    color={'nav.text'}
                     fontWeight={'700'}
                     bg={'transparent'}
                     borderRadius={'20px'}
@@ -55,7 +60,7 @@ export function ProfileCard() {
                 <Box
                     marginTop={'43px'}
                     marginLeft={'10px'}
-                    color={'#FFFFFF'}
+                    color={'nav.text'}
                     bg={'transparent'}>
                     <Text
                         bg={'transparent'}
@@ -64,21 +69,25 @@ export function ProfileCard() {
 
                     <Text
                         bg={'transparent'}
-                        color={'#909090'}
-                        my={'5'}
+                        color={'nav.link'}
                         fontSize="11px">@audhinaha</Text>
 
                     <Text
-                        my="5"
                         bg={'transparent'}
                         fontSize="11px">Picked over by the worms, and weird fishes.</Text>
 
-                    <HStack mt="4" bg={'transparent'}>
-                        <Text fontSize="11px" bg={'transparent'}>291 <Text color={'#909090'} as={'span'} bg={'transparent'}>Following</Text></Text>
-                        <Text fontSize="11px" bg={'transparent'}>23 <Text color={'#909090'} as={'span'} bg={'transparent'}>Followers</Text></Text>
+                    <HStack bg={'transparent'}>
+                        <Text fontSize="11px" bg={'transparent'}>291 <Text color={'nav.link'} as={'span'} bg={'transparent'}>Following</Text></Text>
+                        <Text fontSize="11px" bg={'transparent'}>23 <Text color={'nav.link'} as={'span'} bg={'transparent'}>Followers</Text></Text>
                     </HStack>
                 </Box>
             </Box>
+
+            <ProfileModal
+                isOpen={isOpen}
+                onClose={onClose}
+                initialRef={initialRef}
+                finalRef={finalRef} />
         </Card>
     )
 }
