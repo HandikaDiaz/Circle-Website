@@ -17,6 +17,8 @@ export function RegisterRoute() {
                 color="#04A51E"
                 width={"300px"}
                 display={"flex"}
+                fontSize={"30px"}
+                fontWeight={"bold"}
                 alignItems="center" 
                 justifyContent="start"
                 >circle</Text>

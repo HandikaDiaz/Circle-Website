@@ -11,12 +11,13 @@ export function LoginRoute() {
             justifyContent="center">
             
             <Text 
-                as='h1' 
                 mx="auto"
                 mt={"30px"}
                 color="#04A51E"
                 width={"300px"}
                 display={"flex"}
+                fontSize={"30px"}
+                fontWeight={"bold"}
                 alignItems="center" 
                 justifyContent="start">circle</Text>
 
@@ -27,7 +28,7 @@ export function LoginRoute() {
                 color="#FFFFFF"
                 display={"flex"}
                 alignItems="center" 
-                justifyContent="start">Create account Circle</Text>
+                justifyContent="start">Login to Circle</Text>
 
             <LoginForm />
 

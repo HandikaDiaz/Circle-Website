@@ -61,7 +61,7 @@ export function PostModal({ isOpen, onClose, initialRef, finalRef }: InitialFocu
                                 }}
                                 _hover={{
                                     borderColor: "transparent",
-                                }} />
+                                }}/>
                         </FormControl>
                     </ModalBody>
 
