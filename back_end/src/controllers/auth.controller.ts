@@ -35,6 +35,10 @@ class AuthController {
         const user = await authService.login(value);
         res.json(user);
     }
+    async check(req: Request, res: Response) {
+        const user = (req as any).user;
+        res.json(user);
+    }
 }
 
 export default new AuthController();

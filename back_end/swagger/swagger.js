@@ -53,7 +53,7 @@ const doc = {
                 required: ["fullName","email", "password"]
             },
         },
-        securitySchemas: {
+        securitySchemes: {
             bearerAuth: {
                 type: "http",
                 schema: "bearer"

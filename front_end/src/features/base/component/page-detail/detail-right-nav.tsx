@@ -5,11 +5,11 @@ import { DetailReply } from "./detail-reply";
 export function DetailRightNavbar() {
     return (
         <Box>
-            <HomeItem />
+            {/* <HomeItem /> */}
             <DetailReply />
+            {/* <HomeItem />
             <HomeItem />
-            <HomeItem />
-            <HomeItem />
+            <HomeItem /> */}
         </Box>
     )
 }

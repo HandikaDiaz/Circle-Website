@@ -5,11 +5,11 @@ import { CustomError } from "../middlewares/errorHandler";
 const prisma = new PrismaClient();
 
 class UserService {
-    async updateUser(data: UpdateUserDTO
-    ): Promise<{ user: Omit<User, "password"> }> {
+    async updateUser(id: number, data: UpdateUserDTO
+    ): Promise<{ user: Pick<User, "fullName" | "userName" | "bio" | "id"> }> {
         const user = await prisma.user.findUnique({
             where: {
-                id: 1/*data.id*/
+                id: 1
             }
         });
 
@@ -17,16 +17,23 @@ class UserService {
             throw new CustomError("User not found", 404);
         };
 
-        if (data.fullName || data.userName || data.bio) {
-            user.fullName = data.fullName;
-            user.userName = data.userName;
-            user.bio = data.bio;
-        };
-
-        const { password, ...userToSign } = user;
+        const updateUser = await prisma.user.update ({
+            where: { id: 1 },
+            data: {
+                fullName: data.fullName || user.fullName,
+                userName: data.userName || user.userName,
+                bio: data.bio || user.bio
+            },
+            select: {
+                id: true,
+                fullName: true,
+                userName: true,
+                bio: true,
+            }
+        })
 
         return {
-            user: userToSign
+            user: updateUser
         };
     }
 }

@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { DetailLayout } from "../features/base/layout/detail-layout";
+import { HomeLayout } from "../features/base/layout/home-layout";
 import { ProfileLayout } from "../features/base/layout/profile-layout";
 import { ProfilePeopleLayout } from "../features/base/layout/profile-people-layout";
 import { SearchLayout } from "../features/base/layout/search-layout";
@@ -9,10 +9,32 @@ import { LoginRoute } from "./auth/login";
 import { RegisterRoute } from "./auth/register";
 import { ResetRoute } from "./auth/reset";
 import { Base } from "./base/base";
-import { HomeLayout } from "../features/base/layout/home-layout";
+import { AuthLayout } from "../features/auth/layout/layout";
+import { FollowLayout } from "../features/base/layout/follow-layout";
 
 export function AppRouter() {
     const router = createBrowserRouter([
+        {
+            element: <AuthLayout />,
+            children: [
+                {
+                    path: "/login",
+                    element: <LoginRoute />,
+                },
+                {
+                    path: "/register",
+                    element: <RegisterRoute />,
+                },
+                {
+                    path: "/reset",
+                    element: <ResetRoute />,
+                },
+                {
+                    path: "/forgot",
+                    element: <ForgotRoute />,
+                },
+            ]
+        },
         {
             path: "/",
             element: <Base />,
@@ -37,24 +59,11 @@ export function AppRouter() {
                     path: "search",
                     element: <SearchLayout />,
                 },
-                
+                {
+                    path: "follow",
+                    element: <FollowLayout />,
+                },
             ]
-        },
-        {
-            path: "/login",
-            element: <LoginRoute />,
-        },
-        {
-            path: "/register",
-            element: <RegisterRoute />,
-        },
-        {
-            path: "/reset",
-            element: <ResetRoute />,
-        },
-        {
-            path: "/forgot",
-            element: <ForgotRoute />,
         },
     ]);
 

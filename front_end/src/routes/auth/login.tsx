@@ -1,6 +1,6 @@
+import { Box, Text } from '@chakra-ui/react';
 import { Link } from "react-router-dom";
 import { LoginForm } from "../../features/auth/component/login-form";
-import { Box, Heading, Text } from '@chakra-ui/react'
 
 export function LoginRoute() {
     return (

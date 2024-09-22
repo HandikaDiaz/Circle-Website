@@ -1,10 +1,10 @@
 
 import { Text } from "@chakra-ui/react";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { HomeItem } from "../component/page-home/home-item";
-import { StatusItem } from "../component/page-status/status-item";
+import { StatusPost } from "../component/page-status/status-post";
 import { StatusReply } from "../component/page-status/status-reply";
 import { ButtonLink } from "../link/link";
+import { StatusItem } from "../component/page-status/status-item";
 
 export function StatusLayout() {
     return (
@@ -23,9 +23,9 @@ export function StatusLayout() {
                     <IoIosArrowRoundBack style={{ marginRight: '5px', fontSize: '30px' }} />Status</Text>
             </ButtonLink>
 
-            <StatusItem />
+            <StatusPost />
             <StatusReply />
-            <HomeItem />
+            <StatusItem />
         </>
     )
 }

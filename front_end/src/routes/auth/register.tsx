@@ -1,6 +1,6 @@
+import { Box, Text } from '@chakra-ui/react';
 import { Link } from "react-router-dom";
 import { RegisterForm } from "../../features/auth/component/register-form";
-import { Box, Heading, Text } from '@chakra-ui/react'
 
 export function RegisterRoute() {
     return (

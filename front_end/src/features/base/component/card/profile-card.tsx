@@ -2,13 +2,15 @@ import { Box, Button, Card, Heading, HStack, Image, Text, useDisclosure } from "
 import React from "react";
 import { ButtonLink } from "../../link/link";
 import { ProfileModal } from "../modal/profile-modal";
+import { usePostForm } from "../../hooks/use.post.form";
 
 
 export function ProfileCard() {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const initialRef = React.useRef(null)
-    const finalRef = React.useRef(null)
-    
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const initialRef = React.useRef(null);
+    const finalRef = React.useRef(null);
+    const { data } = usePostForm();
+
     return (
         <Card
             mx={'auto'}
@@ -31,7 +33,7 @@ export function ProfileCard() {
                     height={'100px'}
                     display={'block'}
                     borderRadius='10px'
-                    src='https://wallpapercave.com/wp/wp4566576.jpg'/>
+                    src='https://wallpapercave.com/wp/wp4566576.jpg' />
 
                 <Image
                     top={'115px'}
@@ -62,23 +64,28 @@ export function ProfileCard() {
                     marginLeft={'10px'}
                     color={'nav.text'}
                     bg={'transparent'}>
-                    <Text
-                        bg={'transparent'}
-                        fontWeight="bold"
-                        fontSize="14px">✨ Stella Audhina ✨</Text>
+                    {data && data.length > 0 &&
+                        <Text
+                            bg={'transparent'}
+                            fontWeight="bold"
+                            fontSize="14px">✨ {data[0].author.fullName} ✨</Text>}
 
-                    <Text
-                        bg={'transparent'}
-                        color={'nav.link'}
-                        fontSize="11px">@audhinaha</Text>
+                    {data && data.length > 0 &&
+                        <Text
+                            bg={'transparent'}
+                            color={'nav.link'}
+                            fontSize="11px">@{data[0].author.userName}</Text>}
 
-                    <Text
-                        bg={'transparent'}
-                        fontSize="11px">Picked over by the worms, and weird fishes.</Text>
+                    {data && data.length > 0 &&
+                        <Text
+                            bg={'transparent'}
+                            fontSize="11px">{data[0].author.bio}</Text>}
 
                     <HStack bg={'transparent'}>
-                        <Text fontSize="11px" bg={'transparent'}>291 <Text color={'nav.link'} as={'span'} bg={'transparent'}>Following</Text></Text>
-                        <Text fontSize="11px" bg={'transparent'}>23 <Text color={'nav.link'} as={'span'} bg={'transparent'}>Followers</Text></Text>
+                        {data && data.length > 0 &&
+                            <Text fontSize="11px" bg={'transparent'}>{data[0].author.following} <Text color={'nav.link'} as={'span'} bg={'transparent'}>Following</Text></Text>}
+                        {data && data.length > 0 &&
+                            <Text fontSize="11px" bg={'transparent'}>{data[0].author.followers} <Text color={'nav.link'} as={'span'} bg={'transparent'}>Followers</Text></Text>}
                     </HStack>
                 </Box>
             </Box>

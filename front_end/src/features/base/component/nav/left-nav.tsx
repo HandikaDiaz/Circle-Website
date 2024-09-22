@@ -7,11 +7,13 @@ import { RiUserSearchLine } from "react-icons/ri";
 import { TbLogout2 } from "react-icons/tb";
 import { ButtonLink } from "../../link/link";
 import { PostModal } from "../modal/post-modal";
+import { useLogout } from "../../hooks/use-logout-form";
 
 export function SideLeftNavbar() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const initialRef = React.useRef(null)
     const finalRef = React.useRef(null)
+    const logout = useLogout();
 
     return (
         <Box>
@@ -60,7 +62,7 @@ export function SideLeftNavbar() {
                     alignItems={'center'}
                     textDecoration={'none'}>
                     <IoHeartOutline style={{ marginRight: '10px' }} />
-                    <ButtonLink color={'nav.text'} to={"/search"}>Follows</ButtonLink>
+                    <ButtonLink color={'nav.text'} to={"/follow"}>Follows</ButtonLink>
                 </ListItem>
 
                 <ListItem
@@ -105,7 +107,7 @@ export function SideLeftNavbar() {
                 alignItems={'center'}
                 textDecoration={'none'}>
                 <TbLogout2 />
-                <ButtonLink color={'nav.text'} to={"/register"}>Logout</ButtonLink>
+                <ButtonLink onClick={logout} color={'nav.text'} to={""}>Logout</ButtonLink>
             </Text>
 
 

@@ -9,6 +9,7 @@ export function HomeLayout() {
             <Text
                 fontSize={'20px'}
                 mt={'20px'} 
+                mb={'15px'}
                 px={'25px'} 
                 color={'home.title'}>Home</Text>
             <HomePost />

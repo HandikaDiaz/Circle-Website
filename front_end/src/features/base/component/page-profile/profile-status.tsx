@@ -1,12 +1,14 @@
 
 import { Box, Button, HStack, Image, Text, useDisclosure } from "@chakra-ui/react";
 import React from "react";
+import { usePostForm } from "../../hooks/use.post.form";
 import { ProfileModal } from "../modal/profile-modal";
 
 export function ProfileStatus() {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const initialRef = React.useRef(null)
-    const finalRef = React.useRef(null)
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const initialRef = React.useRef(null);
+    const finalRef = React.useRef(null);
+    const { data } = usePostForm();
 
     return (
         <Box
@@ -18,12 +20,12 @@ export function ProfileStatus() {
                 height={'100px'}
                 display={'block'}
                 borderRadius='10px'
-                src='https://wallpapercave.com/wp/wp4566576.jpg'/>
+                src='https://wallpapercave.com/wp/wp4566576.jpg' />
 
             <Box
                 mt={'-35px'}
-                display={'flex'} 
-                alignItems={'center'} 
+                display={'flex'}
+                alignItems={'center'}
                 justifyContent={'space-between'}>
                 <Image
                     ms={'20px'}
@@ -50,38 +52,42 @@ export function ProfileStatus() {
                 mt={'10px'}
                 color={'home.title'}
                 bg={'transparent'}>
-                <Text
-                    fontSize="16px"
-                    fontWeight="bold"
-                    bg={'transparent'}>✨ Stella Audhina ✨</Text>
+                {data && data.length > 0 &&
+                    <Text
+                        fontSize="16px"
+                        fontWeight="bold"
+                        bg={'transparent'}>✨ {data[0].author.fullName} ✨</Text>}
 
-                <Text
-                    my={'1'}
-                    fontSize="13px"
-                    color={'home.link'}
-                    bg={'transparent'}>@audhinaha</Text>
+                {data && data.length > 0 &&
+                    <Text
+                        my={'1'}
+                        fontSize="13px"
+                        color={'home.link'}
+                        bg={'transparent'}>@{data[0].author.userName}</Text>}
 
-                <Text
-                    my="1"
-                    fontSize="13px"
-                    bg={'transparent'}>Picked over by the worms, and weird fishes.</Text>
+                {data && data.length > 0 &&
+                    <Text
+                        my="1"
+                        fontSize="13px"
+                        bg={'transparent'}>{data[0].author.bio}</Text>}
 
                 <HStack bg={'transparent'}>
-                    <Text 
-                        fontSize="13px" 
-                        bg={'transparent'}>291 
-                        <Text 
-                            as={'span'} 
-                            color={'home.link'} 
-                            bg={'transparent'}> Following</Text></Text>
-
-                    <Text 
-                        fontSize="13px" 
-                        bg={'transparent'}>23 
-                        <Text 
-                            as={'span'} 
-                            color={'home.link'} 
-                            bg={'transparent'}> Followers</Text></Text>
+                    {data && data.length > 0 &&
+                        <Text
+                            fontSize="13px"
+                            bg={'transparent'}>{data[0].author.following}
+                            <Text
+                                as={'span'}
+                                color={'home.link'}
+                                bg={'transparent'}> Following</Text></Text>}
+                    {data && data.length > 0 &&
+                        <Text
+                            fontSize="13px"
+                            bg={'transparent'}>{data[0].author.followers}
+                            <Text
+                                as={'span'}
+                                color={'home.link'}
+                                bg={'transparent'}> Followers</Text></Text>}
                 </HStack>
             </Box>
             <ProfileModal
@@ -91,4 +97,8 @@ export function ProfileStatus() {
                 finalRef={finalRef} />
         </Box>
     )
+}
+
+function useUserForm(): { data: any; } {
+    throw new Error("Function not implemented.");
 }

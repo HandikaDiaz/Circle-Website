@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ResetPasswordForm } from "../types"
+import { ResetPasswordForm } from "../types/dto"
 
 export function userResetForm() {
     const [form, setForm] = useState<ResetPasswordForm>({

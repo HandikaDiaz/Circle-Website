@@ -36,12 +36,12 @@ class AuthService {
         });
 
         if (!user) {
-            throw new CustomError("User not found", 404);
+            throw new CustomError("Email not found", 404);
         }
 
         const isValidPassword = await bcrypt.compare(data.password, user.password);
         if (!isValidPassword) {
-            throw new CustomError("User not found", 401);
+            throw new CustomError("Password is wrong", 401);
         }
         const { password, ...userToSign } = user;
         const secretKey = process.env.JWT_SECRET as string;

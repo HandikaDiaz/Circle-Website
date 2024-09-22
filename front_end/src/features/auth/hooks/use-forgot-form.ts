@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ForgotEmailForm } from "../types"
+import { ForgotEmailForm } from "../types/dto"
 
 export function useForgotForm() {
     const [form, setForm] = useState<ForgotEmailForm>({

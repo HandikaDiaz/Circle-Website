@@ -5,23 +5,12 @@ import {
     Input,
     Text
 } from '@chakra-ui/react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { LoginFormInput, loginSchema } from '../schemas/login';
+import { useLoginForm } from '../hooks/use.login.form';
 import { ErrorMessage } from '../schemas/error';
 
 export function LoginForm() {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors }, } = useForm<LoginFormInput>({
-            resolver: zodResolver(loginSchema)
-        });
-
-    function onSubmit(data: LoginFormInput) {
-        console.log(data);
-    };
+    const { register, handleSubmit, errors, onSubmit } = useLoginForm();
 
     return (
         <Box

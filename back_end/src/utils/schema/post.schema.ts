@@ -1,6 +1,7 @@
 import Joi from 'joi'
-import { PostDTO } from '../../dto/post.dto'
+import { CreatePostDTO } from '../../dto/post.dto'
 
-export const postSchema = Joi.object<PostDTO>({
-    content: Joi.string().min(5)
+export const postSchema = Joi.object<CreatePostDTO>({
+    content: Joi.string().min(5),
+    image: Joi.string()
 })

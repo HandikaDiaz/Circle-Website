@@ -14,8 +14,10 @@ export function ProfileLayout() {
                     mt={'15px'}
                     px={'25px'}
                     display={'flex'}
+                    transition={'0.3s'}
                     color={'home.title'}
-                    alignItems={'center'}><IoIosArrowRoundBack style={{ marginRight: '5px', fontSize: '30px' }} />✨ Stella Audhina ✨</Text>
+                    alignItems={'center'}
+                    _hover={{color: 'home.hoverText'}}><IoIosArrowRoundBack style={{ marginRight: '5px', fontSize: '30px' }} />✨ Stella Audhina ✨</Text>
             </ButtonLink>
 
             <ProfileStatus />

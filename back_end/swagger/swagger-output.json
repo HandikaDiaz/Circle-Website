@@ -54,11 +54,61 @@
           "default": {
             "description": ""
           }
+        },
+        "requestBody": {
+          "description": "Register for user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {"type": "string"},
+                  "fullName": {"type": "string"},
+                  "password": {"type": "string"}
+                },
+                "example": {
+                  "email": "test@gmail.com",
+                  "fullName": "test1",
+                  "password": "123456"
+                }
+              }
+            }
+          },
+          "required": true
         }
       }
     },
     "/api/v1/auth/login": {
       "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "description": "Register for user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {"type": "string"},
+                  "password": {"type": "string"}
+                },
+                "example": {
+                  "email": "test@gmail.com",
+                  "password": "123456"
+                }
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/api/v1/auth/check": {
+      "get": {
         "description": "",
         "responses": {
           "default": {

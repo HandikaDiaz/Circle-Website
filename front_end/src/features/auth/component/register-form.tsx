@@ -4,22 +4,11 @@ import {
     FormControl,
     Input,
 } from '@chakra-ui/react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { RegisterFormInput, registerSchema } from '../schemas/register';
-import { useForm } from 'react-hook-form';
+import { useRegisterForm } from '../hooks/use.register.form';
 import { ErrorMessage } from '../schemas/error';
 
 export function RegisterForm() {
-    const { 
-        register, 
-        handleSubmit, 
-        formState : { errors }, } = useForm<RegisterFormInput>({
-            resolver : zodResolver(registerSchema)
-    });
-
-    function onSubmit(data : RegisterFormInput) {
-        console.log(data);
-    };
+    const { register, handleSubmit, errors, onSubmit } = useRegisterForm();
 
     return (
         <Box

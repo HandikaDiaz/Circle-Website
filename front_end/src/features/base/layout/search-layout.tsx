@@ -1,8 +1,6 @@
-
 import { Box } from "@chakra-ui/react";
-import { AccFollowCard } from "../component/card/acc-follow-card";
-import { AccFollowingCard } from "../component/card/acc-following-card";
 import { SearchInput } from "../component/page-search/search-input";
+import { SearchNoResult } from "../component/page-search/search-no-result";
 
 export function SearchLayout() {
     return (
@@ -14,9 +12,9 @@ export function SearchLayout() {
             justifyContent={'center'}>
 
             <SearchInput />
-            {/* <SearchNoResult /> */}
-            <AccFollowCard />
-            <AccFollowingCard/>
+            <SearchNoResult />
+            {/* <AccFollowCard />
+            <AccFollowingCard/> */}
         </Box>
     )
 }

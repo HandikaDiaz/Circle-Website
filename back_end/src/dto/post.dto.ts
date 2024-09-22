@@ -1,6 +1,8 @@
-export type PostDTO = {
+export type CreatePostDTO = {
     content?: string;
-    likesCount?: number;
-    repliesCount?: number;
-    authorId: number;
+    image?: string;
 }
+
+export type UpdatePostDTO = CreatePostDTO & {
+    id: number;
+};
