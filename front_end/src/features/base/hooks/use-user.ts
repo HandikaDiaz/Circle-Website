@@ -1,12 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from 'react-hook-form';
 import { UserEntity } from '../../../entities/user-entity';
 import { apiV1 } from '../../../libs/api';
 import { UpdateUserFormInput, updateUserSchema } from '../schemas/user.schema';
 import { UpdateUserDTO } from '../types/user.dto';
+import Cookies from 'js-cookie';
 
-export function useUpdateUserForm() {
+export function useUser() {
     const {
         register,
         handleSubmit,
@@ -15,6 +16,22 @@ export function useUpdateUserForm() {
         });
     const queryClient = useQueryClient();
 
+    async function getUser() {
+        const response = await apiV1.get<null, { data: UserEntity }>(
+            '/getUser', {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get("token")}`
+                }
+            }
+        );
+        return response.data;
+    }
+
+    const { data, isLoading } = useQuery<UserEntity, Error, UserEntity>({
+        queryKey: ['user'],
+        queryFn: getUser,
+    })
+    
     async function updateUser(data: UpdateUserDTO) {
         const response = await apiV1.put<null, { data: UserEntity }>(
             '/user', data
@@ -48,5 +65,7 @@ export function useUpdateUserForm() {
         errors,
         isSubmitting,
         onSubmit,
+        data,
+        isLoading
     };
 }

@@ -1,14 +1,14 @@
 
 import { Box, Button, HStack, Image, Text, useDisclosure } from "@chakra-ui/react";
 import React from "react";
-import { usePostForm } from "../../hooks/use.post.form";
 import { ProfileModal } from "../modal/profile-modal";
+import { useUser } from "../../hooks/use-user";
 
 export function ProfileStatus() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
-    const { data } = usePostForm();
+    const { data } = useUser();
 
     return (
         <Box
@@ -52,42 +52,42 @@ export function ProfileStatus() {
                 mt={'10px'}
                 color={'home.title'}
                 bg={'transparent'}>
-                {data && data.length > 0 &&
+
                     <Text
                         fontSize="16px"
                         fontWeight="bold"
-                        bg={'transparent'}>✨ {data[0].author.fullName} ✨</Text>}
+                        bg={'transparent'}>✨ {data?.fullName} ✨</Text>
 
-                {data && data.length > 0 &&
+
                     <Text
                         my={'1'}
                         fontSize="13px"
                         color={'home.link'}
-                        bg={'transparent'}>@{data[0].author.userName}</Text>}
+                        bg={'transparent'}>@{data?.userName}</Text>
 
-                {data && data.length > 0 &&
+
                     <Text
                         my="1"
                         fontSize="13px"
-                        bg={'transparent'}>{data[0].author.bio}</Text>}
+                        bg={'transparent'}>{data?.bio}</Text>
 
                 <HStack bg={'transparent'}>
-                    {data && data.length > 0 &&
+    
                         <Text
                             fontSize="13px"
-                            bg={'transparent'}>{data[0].author.following}
+                            bg={'transparent'}>{data?.following}
                             <Text
                                 as={'span'}
                                 color={'home.link'}
-                                bg={'transparent'}> Following</Text></Text>}
-                    {data && data.length > 0 &&
+                                bg={'transparent'}> Following</Text></Text>
+    
                         <Text
                             fontSize="13px"
-                            bg={'transparent'}>{data[0].author.followers}
+                            bg={'transparent'}>{data?.followers}
                             <Text
                                 as={'span'}
                                 color={'home.link'}
-                                bg={'transparent'}> Followers</Text></Text>}
+                                bg={'transparent'}> Followers</Text></Text>
                 </HStack>
             </Box>
             <ProfileModal
@@ -97,8 +97,4 @@ export function ProfileStatus() {
                 finalRef={finalRef} />
         </Box>
     )
-}
-
-function useUserForm(): { data: any; } {
-    throw new Error("Function not implemented.");
 }

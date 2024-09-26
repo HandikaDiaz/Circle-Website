@@ -21,13 +21,14 @@ model User {
   fullName  String?
   userName  String?
   bio       String?
-  following Int?    @default(0)
-  followers Int?    @default(0)
+  following Follow[] @relation("Following")
+  followers Follow[] @relation("Followers")
 
   role RoleEnum @default(MEMBER)
 
   post  Post[]
   reply Reply[]
+  Like  Like[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -45,9 +46,11 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  reply    Reply[]
+  reply Reply[]
+  like  Like[]
+
   authorId Int
-  author   User    @relation(fields: [authorId], references: [id])
+  author   User @relation(fields: [authorId], references: [id])
 
   @@map("post")
 }
@@ -69,6 +72,33 @@ model Reply {
   author   User @relation(fields: [authorId], references: [id])
 
   @@map("reply")
+}
+
+model Follow {
+  id          Int      @id @default(autoincrement())
+  followerId  Int
+  follower    User     @relation("Followers", fields: [followerId], references: [id])
+
+  followingId Int
+  following   User     @relation("Following", fields: [followingId], references: [id])
+
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
+}
+
+model Like {
+  id     Int @id @default(autoincrement())
+  userId Int
+  postId Int
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+
+  cratedAt DateTime @default(now())
+
+  @@unique([userId, postId])
+  @@map("like")
 }
 
 enum RoleEnum {

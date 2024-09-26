@@ -1,64 +1,43 @@
 import { PrismaClient, Reply } from "@prisma/client";
 import { ReplyDTO, UpdateReplyDTO } from "../dto/reply.dto";
+import { CustomError } from "../middlewares/errorHandler";
 
 const prisma = new PrismaClient();
 class replyService {
-    async getAllReply(): Promise<Reply[]> {
+    async getReplyByPost(postId: number): Promise<Reply[]> {
         return await prisma.reply.findMany({
+            where: { postId },
             include: {
                 author: {
                     select: {
-                        id: true,
                         fullName: true,
                         userName: true,
-                        bio: true,
-                        createdAt: true,
-                        email: true,
-                        followers: true,
-                        following: true,
-                        post: true,
-                        reply: true,
-                        role: true,
-                        updatedAt: true
-                    }
-                },
-                post: {
-                    select: {
-                        id: true,
-                        authorId: true,
-                        author: true,
-                        content: true,
-                        createdAt: true,
-                        image: true,
-                        likesCount: true,
-                        repliesCount: true,
-                        reply: true,
-                        updatedAt: true
                     }
                 }
             }
         });
     };
 
-    async getReplyById(id: number): Promise<Reply | null> {
-        return await prisma.reply.findUnique({
-            where: {
-                id
-            },
-            include: {
-                post: true
-            }
-        });
-    };
-
-    async createReply(data: ReplyDTO): Promise<Reply | null> {
-        return await prisma.reply.create({
+    async createReply(data: ReplyDTO, authorId: number): Promise<Reply | null> {
+        if (!data.postId) {
+            throw new Error('Post ID is required to create a reply.');
+        }
+        const newReply = await prisma.reply.create({
             data: {
-                ...data,
-                postId: 1,
-                authorId: 1 
+                content: data.content,
+                image: data.image || null,
+                postId: data.postId,
+                authorId: authorId
             }
         });
+        const replyCount = await prisma.reply.count({
+            where: { postId: data.postId }
+        });
+        await prisma.post.update({
+            where: { id: data.postId },
+            data: { repliesCount: replyCount }
+        });
+        return newReply;
     };
 
     async updateReply(data: UpdateReplyDTO): Promise<Reply | null> {
@@ -69,6 +48,7 @@ class replyService {
         });
 
         const update: Partial<Reply> = {};
+
         if (reply && data.content) {
             reply.content = data.content;
         }
@@ -79,18 +59,33 @@ class replyService {
 
         return await prisma.reply.update({
             data: update,
-            where: { id: 2 },
+            where: { id: data.id },
         });
     }
 
     async deleteReply(id: number): Promise<Reply | null> {
-        const post = await prisma.reply.findUnique({
+        const reply = await prisma.reply.findUnique({
             where: { id },
         });
 
-        return await prisma.reply.delete({
+        if (!reply) {
+            throw new CustomError("Reply not found", 404);
+        }
+
+        await prisma.reply.delete({
             where: { id }
         });
+
+        const replyCount = await prisma.reply.count({
+            where: { postId: reply.postId }
+        });
+
+        await prisma.post.update({
+            where: { id: reply.postId },
+            data: { repliesCount: replyCount }
+        });
+
+        return reply
     }
 };
 

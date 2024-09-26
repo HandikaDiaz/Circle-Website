@@ -5,9 +5,9 @@ import { FaHome } from "react-icons/fa";
 import { IoHeartOutline } from "react-icons/io5";
 import { RiUserSearchLine } from "react-icons/ri";
 import { TbLogout2 } from "react-icons/tb";
-import { ButtonLink } from "../../link/link";
+import { ButtonLink } from "../../button/link";
 import { PostModal } from "../modal/post-modal";
-import { useLogout } from "../../hooks/use-logout-form";
+import { useLogout } from "../../hooks/use-logout";
 
 export function SideLeftNavbar() {
     const { isOpen, onOpen, onClose } = useDisclosure()

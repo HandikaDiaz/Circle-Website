@@ -1,11 +1,10 @@
 import { Box, Image, Text } from "@chakra-ui/react";
 import { FaComments, FaHeart } from "react-icons/fa";
-import { useReplyForm } from "../../hooks/use.reply.form";
-import { ButtonLink } from "../../link/link";
+import { useReplyForm } from "../../hooks/use-reply";
+import { ButtonLink } from "../../button/link";
 
 export function StatusItem() {
     const { data } = useReplyForm();
-    console.log(data);
 
     return (
         <>

@@ -1,6 +1,5 @@
 import { Box, Card, Heading } from "@chakra-ui/react";
 import { AccFollowCard } from "./acc-follow-card";
-import { AccFollowingCard } from "./acc-following-card";
 
 
 export function SuggestionCard() {
@@ -20,7 +19,6 @@ export function SuggestionCard() {
                     fontSize={'23px'}
                     color={'nav.title2'}>Suggested for you</Heading>
                 <AccFollowCard/>
-                <AccFollowingCard/>
             </Box>
         </Card>
     )

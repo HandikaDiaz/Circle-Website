@@ -7,7 +7,7 @@ export function MetaCard() {
     return (
         <Card
             mx={'auto'}
-            mt={'20px'}
+            my={'20px'}
             width={'90%'}
             borderRadius={'5px'}
             paddingBottom={'20px'}

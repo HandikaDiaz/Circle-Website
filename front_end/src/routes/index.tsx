@@ -44,7 +44,7 @@ export function AppRouter() {
                     element: <HomeLayout />,
                 },
                 {
-                    path: "status",
+                    path: "status/:postId",
                     element: <StatusLayout />,
                 },
                 {

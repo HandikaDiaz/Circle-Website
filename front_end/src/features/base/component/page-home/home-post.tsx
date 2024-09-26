@@ -1,15 +1,13 @@
 import { Box, Button, FormControl, FormLabel, Input, Image } from "@chakra-ui/react";
 import { LuImagePlus } from "react-icons/lu";
-import { usePostForm } from "../../hooks/use.post.form";
+import { usePost } from "../../hooks/use-post";
 import { ErrorMessage } from "../../../auth/schemas/error";
 
 export function HomePost() {
-    const { register, handleSubmit, errors, onSubmit, isLoading } = usePostForm();
-
-    if (isLoading) return <h1>Loading...</h1>;
+    const { register, handleSubmit, errors, onSubmit, isSubmitting } = usePost();
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
             <Box
                 mt={'10px'}
                 px={'25px'}
@@ -59,7 +57,7 @@ export function HomePost() {
                             color={'home.button.hoverText'}
                             fontSize={'25px'}><LuImagePlus /></FormLabel>
                         <Input type='file' {...register('image')} hidden />
-                        <ErrorMessage message={errors.content?.message} />
+                        <ErrorMessage message={errors.image?.message || ''} />
                     </FormControl> */}
 
                     <Button
@@ -72,6 +70,7 @@ export function HomePost() {
                         transition={'0.3s'}
                         padding={'5px 30px'}
                         borderRadius={'15px'}
+                        disabled={isSubmitting}
                         color={'home.button.text'}
                         backgroundColor={'home.button.background'}
                         _hover={{ backgroundColor: 'home.button.hoverBackground', color: 'home.button.hoverText' }}>Post</Button>

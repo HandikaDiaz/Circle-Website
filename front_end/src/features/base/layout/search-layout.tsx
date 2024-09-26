@@ -13,8 +13,6 @@ export function SearchLayout() {
 
             <SearchInput />
             <SearchNoResult />
-            {/* <AccFollowCard />
-            <AccFollowingCard/> */}
         </Box>
     )
 }

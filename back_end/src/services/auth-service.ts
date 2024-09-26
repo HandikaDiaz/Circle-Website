@@ -12,11 +12,13 @@ class AuthService {
     ): Promise<{ user: Omit<User, "password"> }> {
         const salt = 10;
         const hashedPassword = await bcrypt.hash(data.password, salt);
+        const userName = data.email.split('@')[0];
         
         const user = await prisma.user.create({
             data: {
                 ...data,
-                password: hashedPassword
+                password: hashedPassword,
+                userName
             }
         });
 

@@ -2,7 +2,7 @@
 import { Avatar, Box, Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Textarea } from "@chakra-ui/react";
 import { RefObject } from "react";
 import { LuImagePlus } from "react-icons/lu";
-import { usePostForm } from "../../hooks/use.post.form";
+import { usePost } from "../../hooks/use-post";
 
 interface InitialFocusModalProps {
     isOpen: boolean;
@@ -12,7 +12,7 @@ interface InitialFocusModalProps {
 }
 
 export function PostModal({ isOpen, onClose, initialRef, finalRef }: InitialFocusModalProps) {
-    const { register, handleSubmit, errors, onSubmit, isLoading } = usePostForm();
+    const { register, handleSubmit, errors, onSubmit, isLoading } = usePost();
 
     return (
         <>
@@ -74,15 +74,15 @@ export function PostModal({ isOpen, onClose, initialRef, finalRef }: InitialFocu
                         display="flex"
                         borderTop="1px solid grey"
                         justifyContent="space-between">
-                        {/* <FormControl>
+                        <FormControl>
                             <FormLabel
                                 width={'30px'}
                                 display={'flex'}
                                 cursor={'pointer'}
                                 color={'home.button.hoverText'}
                                 fontSize={'30px'}><LuImagePlus /></FormLabel>
-                            <Input type='file' hidden />
-                        </FormControl> */}
+                            <Input type='file' {...register('image')} hidden />
+                        </FormControl>
                         <Button
                             border={'none'}
                             type="submit"

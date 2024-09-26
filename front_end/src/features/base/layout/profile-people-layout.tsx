@@ -3,7 +3,7 @@ import { Text } from "@chakra-ui/react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { ProfileStatusPeople } from "../component/page-profile-people/profile-status-people";
 import { ProfileTabsPeople } from "../component/page-profile-people/profile-tab";
-import { ButtonLink } from "../link/link";
+import { ButtonLink } from "../button/link";
 
 export function ProfilePeopleLayout() {
     return(

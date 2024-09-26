@@ -1,11 +1,13 @@
 
 import { Text } from "@chakra-ui/react";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { ButtonLink } from "../button/link";
 import { ProfileStatus } from "../component/page-profile/profile-status";
 import { ProfileTabs } from "../component/page-profile/profile-tab";
-import { ButtonLink } from "../link/link";
+import { useUser } from "../hooks/use-user";
 
 export function ProfileLayout() {
+    const { data } = useUser();
     return (
         <>
             <ButtonLink color={'white'} textDecoration={'none'} to={"/"} bg={'none'}>
@@ -17,7 +19,7 @@ export function ProfileLayout() {
                     transition={'0.3s'}
                     color={'home.title'}
                     alignItems={'center'}
-                    _hover={{color: 'home.hoverText'}}><IoIosArrowRoundBack style={{ marginRight: '5px', fontSize: '30px' }} />✨ Stella Audhina ✨</Text>
+                    _hover={{color: 'home.hoverText'}}><IoIosArrowRoundBack style={{ marginRight: '5px', fontSize: '30px' }} />✨ {data?.fullName} ✨</Text>
             </ButtonLink>
 
             <ProfileStatus />

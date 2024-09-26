@@ -1,6 +1,6 @@
 import { Box, Button, FormControl, FormLabel, Input, Image, Textarea } from "@chakra-ui/react";
 import { LuImagePlus } from "react-icons/lu";
-import { useReplyForm } from "../../hooks/use.reply.form";
+import { useReplyForm } from "../../hooks/use-reply";
 
 
 export function StatusReply() {

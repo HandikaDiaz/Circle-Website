@@ -5,6 +5,7 @@ import swaggerUI from "swagger-ui-express";
 import swaggerDocument from "../swagger/swagger-output.json";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
 import { routerV1 } from "./routes/v1";
+import upload from "./middlewares/uploadImageMiddleware";
 
 dotenv.config();
 
@@ -12,7 +13,9 @@ const app: Express = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use('/uploadImage', express.static('uploadImage'));
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
     explorer: true,
     swaggerOptions: {

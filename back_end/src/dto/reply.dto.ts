@@ -1,11 +1,11 @@
 export type ReplyDTO = {
     image?: string;
     content?: string;
-    likesCount?: number;
-    repliesCount?: number;
     postId: number;
 }
 
-export type UpdateReplyDTO = ReplyDTO & {
+export type UpdateReplyDTO = {
     id: number;
-};
+    content?: string;
+    image?: string;
+}

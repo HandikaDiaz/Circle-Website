@@ -1,15 +1,15 @@
 import { Box, Button, Card, Heading, HStack, Image, Text, useDisclosure } from "@chakra-ui/react";
 import React from "react";
-import { ButtonLink } from "../../link/link";
+import { ButtonLink } from "../../button/link";
 import { ProfileModal } from "../modal/profile-modal";
-import { usePostForm } from "../../hooks/use.post.form";
+import { useUser } from "../../hooks/use-user";
 
 
 export function ProfileCard() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
-    const { data } = usePostForm();
+    const { data } = useUser();
 
     return (
         <Card
@@ -64,28 +64,28 @@ export function ProfileCard() {
                     marginLeft={'10px'}
                     color={'nav.text'}
                     bg={'transparent'}>
-                    {data && data.length > 0 &&
+                    
                         <Text
                             bg={'transparent'}
                             fontWeight="bold"
-                            fontSize="14px">✨ {data[0].author.fullName} ✨</Text>}
+                            fontSize="14px">✨ {data?.fullName} ✨</Text>
 
-                    {data && data.length > 0 &&
+                    
                         <Text
                             bg={'transparent'}
                             color={'nav.link'}
-                            fontSize="11px">@{data[0].author.userName}</Text>}
+                            fontSize="11px">@{data?.userName}</Text>
 
-                    {data && data.length > 0 &&
+
                         <Text
                             bg={'transparent'}
-                            fontSize="11px">{data[0].author.bio}</Text>}
+                            fontSize="11px">{data?.bio}</Text>
 
                     <HStack bg={'transparent'}>
-                        {data && data.length > 0 &&
-                            <Text fontSize="11px" bg={'transparent'}>{data[0].author.following} <Text color={'nav.link'} as={'span'} bg={'transparent'}>Following</Text></Text>}
-                        {data && data.length > 0 &&
-                            <Text fontSize="11px" bg={'transparent'}>{data[0].author.followers} <Text color={'nav.link'} as={'span'} bg={'transparent'}>Followers</Text></Text>}
+                        
+                            <Text fontSize="11px" bg={'transparent'}>{data?.following} <Text color={'nav.link'} as={'span'} bg={'transparent'}>Following</Text></Text>
+                        
+                            <Text fontSize="11px" bg={'transparent'}>{data?.followers} <Text color={'nav.link'} as={'span'} bg={'transparent'}>Followers</Text></Text>
                     </HStack>
                 </Box>
             </Box>

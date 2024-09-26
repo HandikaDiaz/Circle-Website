@@ -1,11 +1,12 @@
 import { Box, Image, Text } from "@chakra-ui/react";
 import { FaComments, FaHeart } from "react-icons/fa";
-import { ButtonLink } from "../../link/link";
-import { usePostForm } from "../../hooks/use.post.form";
+import { ButtonLink } from "../../button/link";
+import LikeButton from "../../button/like";
+import { useAllPosts } from "../../hooks/use-all";
 
 export function HomeItem() {
-    const { data } = usePostForm();
-    
+    const { data } = useAllPosts();
+
     return (
         <>
             {data?.map((post) => {
@@ -14,6 +15,7 @@ export function HomeItem() {
                         mt={'20px'}
                         px={'25px'}
                         pb={'15px'}
+                        key={post.id}
                         color={'home.text'}
                         alignItems={'center'}
                         borderBottom={'1px solid #3F3F3F'}>
@@ -43,15 +45,14 @@ export function HomeItem() {
                                     display={'flex'}
                                     fontSize={'20px'}
                                     alignItems={'center'}>
-                                    <FaHeart style={{ color: 'red' }} />
+                                    <LikeButton postId={post.id} />
                                     <Text
-                                        ms={'5px'}
                                         as={'span'}
                                         color={'home.link'}
                                         fontSize={'12px'}>{post.likesCount}</Text>
 
                                     <FaComments style={{ color: '#909090', marginLeft: '20px' }} />
-                                    <ButtonLink to={"/status"} display={'flex'}>
+                                    <ButtonLink state={post.id} to={`/status/${post.id}`} display={'flex'}>
                                         <Text
                                             ms={'5px'}
                                             as={'span'}

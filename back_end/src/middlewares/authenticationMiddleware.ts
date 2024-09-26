@@ -8,7 +8,7 @@ export function authentication(req: RequestWithUser, res: Response, next: NextFu
     if(!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
         return new CustomError("Authentication failed", 401);
     }
-
+    
     const token = authorizationHeader.replace("Bearer ", "");
     if(!token) {
         return new CustomError("Authentication failed", 401);

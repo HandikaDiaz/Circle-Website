@@ -1,11 +1,14 @@
-import { Post, PrismaClient } from "@prisma/client";
+import { Post, PrismaClient, Reply   } from "@prisma/client";
 import { CreatePostDTO, UpdatePostDTO } from "../dto/post.dto";
 
 const prisma = new PrismaClient();
+
 class postService {
-    async getAllPosts(): Promise<Post[]> {
-        return await prisma.post.findMany({
+    async getAllPosts(authorId: number): Promise<Post[]> {
+        const post = await prisma.post.findMany({
+            where: { authorId },
             include: {
+                reply: true,
                 author: {
                     select: {
                         id: true,
@@ -16,47 +19,48 @@ class postService {
                         email: true,
                         followers: true,
                         following: true,
-                        post: true,
-                        reply: true,
                         role: true,
                         updatedAt: true
                     }
                 }
+            },
+            orderBy: {
+                createdAt: 'desc'
             }
         });
+        const postsWithReplyCount = post.map((post) => {
+            return {
+                ...post,
+                repliesCount: post.reply.length
+            };
+        });
+
+        return postsWithReplyCount;
     };
 
-    async getPostById(id: number): Promise<Post | null> {
+    async getPostById(postId: number): Promise<Post | null> {
         return await prisma.post.findUnique({
             where: {
-                id
+                id: postId
             },
             include: {
+                reply: true,
                 author: {
                     select: {
-                        id: true,
                         fullName: true,
-                        userName: true,
-                        bio: true,
-                        createdAt: true,
-                        email: true,
-                        followers: true,
-                        following: true,
-                        post: true,
-                        reply: true,
-                        role: true,
-                        updatedAt: true
+                        userName: true
                     }
                 }
             }
         });
     };
 
-    async createPost(data: CreatePostDTO): Promise<Post | null> {
+    async createPost(data: CreatePostDTO, authorId: number, image: string): Promise<Post | null> {
         return await prisma.post.create({
             data: {
                 ...data,
-                authorId: 1
+                image,
+                authorId
             }
         });
     };
@@ -79,15 +83,11 @@ class postService {
 
         return await prisma.post.update({
             data: update,
-            where: { id: 2 },
+            where: { id: data.id },
         });
     }
 
     async deletePost(id: number): Promise<Post | null> {
-        const post = await prisma.post.findUnique({
-            where: { id },
-        });
-
         return await prisma.post.delete({
             where: { id }
         });

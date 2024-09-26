@@ -1,4 +1,5 @@
 
+import { useAppSelector } from "../../../store/hooks/use.store";
 import { HomeItem } from "../component/page-home/home-item";
 import { HomePost } from "../component/page-home/home-post";
 import { Text } from "@chakra-ui/react";

@@ -2,7 +2,7 @@
 import { Avatar, Box, Button, FormControl, FormLabel, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Text, Textarea } from "@chakra-ui/react";
 import { RefObject } from "react";
 import { LuImagePlus } from "react-icons/lu";
-import { useUpdateUserForm } from "../../hooks/use.user.form";
+import { useUser } from "../../hooks/use-user";
 
 interface InitialFocusModalProps {
     isOpen: boolean;
@@ -12,7 +12,7 @@ interface InitialFocusModalProps {
 }
 
 export function ProfileModal({ isOpen, onClose, initialRef, finalRef }: InitialFocusModalProps) {
-    const { register, handleSubmit, errors, onSubmit } = useUpdateUserForm();
+    const { register, handleSubmit, errors, onSubmit } = useUser();
     return (
         <>
             <Modal

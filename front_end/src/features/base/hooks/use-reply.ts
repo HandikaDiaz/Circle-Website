@@ -5,8 +5,12 @@ import { ReplyEntity } from '../../../entities/repyl-entity';
 import { apiV1 } from '../../../libs/api';
 import { CreateReplyFormInput, replySchema } from '../schemas/reply.schema';
 import { CreateReplyDTO } from '../types/reply.dto';
+import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 export function useReplyForm() {
+    const { postId } = useParams<{ postId: string }>();
+
     const {
         register,
         handleSubmit,
@@ -15,33 +19,44 @@ export function useReplyForm() {
         });
 
     async function getReply() {
-        const response = await apiV1.get<null, { data:  ReplyEntity[] }>(
-            '/reply-post'
+        const response = await apiV1.get<null, { data: ReplyEntity[] }>(
+            `/post/${postId}/reply`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`
+            }
+        }
         );
-        
         return response.data;
     }
 
     const queryClient = useQueryClient();
     const { data, isLoading } = useQuery<ReplyEntity[], Error, ReplyEntity[]>({
-        queryKey: ['reply-post'],
+        queryKey: ['post', postId],
         queryFn: getReply,
+        enabled: !!postId,
     });
 
     async function createReply(data: CreateReplyDTO) {
+        const replyData = { ...data, postId };
+        console.log("Reply data to send:", replyData);
+
         const response = await apiV1.post<null, { data: ReplyEntity }>(
-            '/reply-post', data
+            `/post/${postId}/reply`, replyData, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`
+            }
+        }
         );
-        
-        queryClient.invalidateQueries({ queryKey: ['reply-post'] });
+
+        queryClient.invalidateQueries({ queryKey: ['reply-post', postId] });
         return response.data;
     }
 
     const { mutateAsync: createReplyAsync } = useMutation<
-        CreateReplyDTO,
+        ReplyEntity,
         Error,
         CreateReplyDTO>({
-            mutationKey: ['createReply'],
+            mutationKey: ['createReply', postId],
             mutationFn: createReply,
         })
 

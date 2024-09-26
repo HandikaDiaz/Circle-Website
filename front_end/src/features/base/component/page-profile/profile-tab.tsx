@@ -8,8 +8,7 @@ export function ProfileTabs() {
             mt={'20px'}
             px={'25px'}
             pb={'15px'}
-            alignItems={'center'}
-            borderBottom={'1px solid #3F3F3F'}>
+            alignItems={'center'}>
 
             <Tabs variant={'unstyled'} position='relative' >
                 <TabList 
@@ -25,10 +24,10 @@ export function ProfileTabs() {
 
                 <TabPanels>
                     <TabPanel width={'100%'}>
-                        <ProfilePost/>
+                        <ProfilePost />
                     </TabPanel>
                     <TabPanel>
-                        <ProfileMedia/>
+                        <ProfileMedia />
                     </TabPanel>
                 </TabPanels>
             </Tabs>
