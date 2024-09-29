@@ -1,8 +1,7 @@
 
-import { useAppSelector } from "../../../store/hooks/use.store";
+import { Text } from "@chakra-ui/react";
 import { HomeItem } from "../component/page-home/home-item";
 import { HomePost } from "../component/page-home/home-post";
-import { Text } from "@chakra-ui/react";
 
 export function HomeLayout() {
     return(

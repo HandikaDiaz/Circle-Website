@@ -3,7 +3,7 @@ import { RegisterFormInput, registerSchema } from '../schemas/register.schema';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import Cookies from "js-cookie";
-import { RegisterResponseDTO, RegisterRequestDTO } from '../types/register.dto';
+import { RegisterResponseDTO } from '../types/register.dto';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../store/hooks/use.store';
 import { setUser } from '../../../store/auth.slice';
@@ -23,11 +23,7 @@ export function useRegisterForm() {
 
     async function onSubmit(data: RegisterFormInput) {
         try {
-            const response = await apiV1.post<
-                null,
-                { data: RegisterResponseDTO },
-                RegisterRequestDTO
-            >('/auth/register', data);
+            const response = await apiV1.post<RegisterResponseDTO>('/auth/register', data);
             const { user, token } = response.data;
 
             dispatch(setUser(user));
@@ -40,7 +36,7 @@ export function useRegisterForm() {
             console.log("Error:", error);
 
             if (axios.isAxiosError(error) && error.response) {
-                const stackMessage = error.response.data.stack;
+                const stackMessage = error.response?.data?.stack ?? "";
                 if (stackMessage.includes('"fullName"')) {
                     setError('fullName', {
                         message: "Full name must be at least 5 characters long",

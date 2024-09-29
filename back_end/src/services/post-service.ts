@@ -55,11 +55,44 @@ class postService {
         });
     };
 
-    async createPost(data: CreatePostDTO, authorId: number, image: string): Promise<Post | null> {
+    async getAllPostsByAuthor(authorId: number): Promise<Post[]> {
+        const post = await prisma.post.findMany({
+            where: { authorId },
+            include: {
+                reply: true,
+                author: {
+                    select: {
+                        id: true,
+                        fullName: true,
+                        userName: true,
+                        bio: true,
+                        createdAt: true,
+                        email: true,
+                        followers: true,
+                        following: true,
+                        role: true,
+                        updatedAt: true
+                    }
+                }
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+        const postsWithReplyCount = post.map((post) => {
+            return {
+                ...post,
+                repliesCount: post.reply.length
+            };
+        });
+
+        return postsWithReplyCount;
+    };
+
+    async createPost(data: CreatePostDTO, authorId: number): Promise<Post | null> {
         return await prisma.post.create({
             data: {
                 ...data,
-                image,
                 authorId
             }
         });

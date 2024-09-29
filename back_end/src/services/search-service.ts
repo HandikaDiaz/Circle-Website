@@ -1,23 +1,28 @@
 import { PrismaClient } from '@prisma/client';
+import { CustomError } from '../middlewares/errorHandler';
 
 const prisma = new PrismaClient();
 
-export const searchService = async (query: string) => {
-    return await prisma.post.findMany({
+export const searchService = async (query: string, userId: number) => {
+    if (!query) {
+        throw new CustomError("Query is required", 400);
+    }
+    return await prisma.user.findMany({
         where: {
-            OR: [
-                {author: {fullName: {contains: query, mode: 'insensitive'}}},
-                {content: {contains: query, mode: 'insensitive'}},
-            ]
-        },
-        include: {
-            author: {
-                select: {
-                    fullName: true,
-                    userName: true,
+            AND: [
+                { id: { not: userId } },
+                {
+                    OR: [
+                        { fullName: { contains: query, mode: 'insensitive' } },
+                        { userName: { contains: query, mode: 'insensitive' } },
+                    ]
                 }
-            },
-            reply: true
+            ]
+        }, select: {
+            id: true,
+            email: true,
+            fullName: true,
+            userName: true,
         }
     })
 }

@@ -1,10 +1,11 @@
 import { Box, Image, Text } from "@chakra-ui/react";
 import { FaComments, FaHeart } from "react-icons/fa";
-import { useReplyForm } from "../../hooks/use-reply";
 import { ButtonLink } from "../../button/link";
+import { useAllReplies } from "../../hooks/use-all";
+import LikeButton from "../../button/like";
 
 export function StatusItem() {
-    const { data } = useReplyForm();
+    const { data } = useAllReplies();
 
     return (
         <>
@@ -43,21 +44,11 @@ export function StatusItem() {
                                     display={'flex'}
                                     fontSize={'20px'}
                                     alignItems={'center'}>
-                                    <FaHeart style={{ color: 'red' }} />
+                                    <LikeButton postId={reply.id} />
                                     <Text
-                                        ms={'5px'}
                                         as={'span'}
                                         color={'home.link'}
                                         fontSize={'12px'}>{reply.likesCount}</Text>
-
-                                    <FaComments style={{ color: '#909090', marginLeft: '20px' }} />
-                                    <ButtonLink to={"/status"} display={'flex'}>
-                                        <Text
-                                            ms={'5px'}
-                                            as={'span'}
-                                            color={'home.link'}
-                                            fontSize={'12px'}>{reply.repliesCount} Replies</Text>
-                                    </ButtonLink>
                                 </Text>
                             </Box>
                         </Box>

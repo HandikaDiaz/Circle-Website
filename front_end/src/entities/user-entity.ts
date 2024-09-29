@@ -1,4 +1,4 @@
-import { PostEntity } from "./post-entity";
+import { GetPostEntity } from "./post-entity";
 import { RoleEnum } from "./role-entity";
 
 export interface UserEntity {
@@ -13,5 +13,5 @@ export interface UserEntity {
     role: RoleEnum;
     createdAt: Date;
     updatedAt: Date;
-    post: PostEntity[];
+    post: GetPostEntity[];
 }

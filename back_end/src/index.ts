@@ -5,7 +5,7 @@ import swaggerUI from "swagger-ui-express";
 import swaggerDocument from "../swagger/swagger-output.json";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
 import { routerV1 } from "./routes/v1";
-import upload from "./middlewares/uploadImageMiddleware";
+import upload from "./middlewares/uploadImage";
 
 dotenv.config();
 

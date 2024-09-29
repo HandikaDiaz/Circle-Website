@@ -1,4 +1,4 @@
-import { PostEntity } from "./post-entity";
+import { GetPostEntity } from "./post-entity";
 import { UserEntity } from "./user-entity";
 
 export interface ReplyEntity {
@@ -10,6 +10,6 @@ export interface ReplyEntity {
     createdAt: Date;
     updatedAt: Date;
     postId: number;
-    post: PostEntity;
+    post: GetPostEntity;
     author:  Omit<UserEntity, 'password'>;
 }

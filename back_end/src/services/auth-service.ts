@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 class AuthService {
     async register(
         data: RegisterDTO
-    ): Promise<{ user: Omit<User, "password"> }> {
+    ): Promise<{ user: Omit<User, "password">, token: string }> {
         const salt = 10;
         const hashedPassword = await bcrypt.hash(data.password, salt);
         const userName = data.email.split('@')[0];
@@ -23,8 +23,14 @@ class AuthService {
         });
 
         const { password, ...userToSign } = user;
+        const token = jwt.sign(
+            {id : user.id, email: user.email},
+            process.env.JWT_SECRET as string,
+            {expiresIn: '1d'}
+        )
         return { 
-            user: userToSign 
+            user: userToSign,
+            token
         };
     }
 

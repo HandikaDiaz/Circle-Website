@@ -1,11 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Cookies from 'js-cookie';
 import { useForm } from 'react-hook-form';
 import { UserEntity } from '../../../entities/user-entity';
 import { apiV1 } from '../../../libs/api';
 import { UpdateUserFormInput, updateUserSchema } from '../schemas/user.schema';
 import { UpdateUserDTO } from '../types/user.dto';
-import Cookies from 'js-cookie';
 
 export function useUser() {
     const {
@@ -34,7 +34,11 @@ export function useUser() {
     
     async function updateUser(data: UpdateUserDTO) {
         const response = await apiV1.put<null, { data: UserEntity }>(
-            '/user', data
+            `/user`, data, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get("token")}`
+                }
+            }
         );
         
         queryClient.invalidateQueries({ queryKey: ['user'] });

@@ -1,6 +1,7 @@
 import { Response } from "express";
 import { RequestWithUser } from "../types/post";
 import { PrismaClient } from "@prisma/client";
+import { CustomError } from "../middlewares/errorHandler";
 
 const prisma = new PrismaClient();
 
@@ -17,7 +18,7 @@ class LikeController {
             }
         })
         if (!post) {
-            return res.status(404).json({ message: 'Post not found' });
+            return new CustomError("Post not found", 404);
         }
 
         const isLiked = post.like && post.like.length > 0;

@@ -2,28 +2,13 @@ import { Box, Image, Text } from "@chakra-ui/react";
 import FollowButton from "../../button/follow";
 import { ButtonLink } from "../../button/link";
 import { useAllUsers } from "../../hooks/use-all";
-import { UserEntity } from "../../../../entities/user-entity";
-import { useEffect, useState } from "react";
 
 
-export function AccFollowCard() {
+export function FollowItem() {
     const { data } = useAllUsers();
-    const [randomUsers, setRandomUsers] = useState<UserEntity[]>([]);
-    const getRandomUsers = (users: UserEntity[]): UserEntity[] => {
-        if (!users || users.length === 0) return [];
-        const shuffled = users.sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, 3);
-    };
-    useEffect(() => {
-        if (data) {
-            const selectedUsers = getRandomUsers(data);
-            setRandomUsers(selectedUsers);
-        }
-    }, [data]);
-    
     return (
         <>
-            {randomUsers?.map((user) => {
+            {data?.map((user) => {
                 return (
                     <Box
                         mt={'13px'}

@@ -1,12 +1,12 @@
 import { Box, Image, Text } from "@chakra-ui/react";
-import { FaComments, FaHeart } from "react-icons/fa";
+import { FaComments } from "react-icons/fa";
+import LikeButtonPost from "../../button/like";
 import { ButtonLink } from "../../button/link";
-import LikeButton from "../../button/like";
 import { useAllPosts } from "../../hooks/use-all";
 
 export function HomeItem() {
     const { data } = useAllPosts();
-
+    
     return (
         <>
             {data?.map((post) => {
@@ -34,18 +34,21 @@ export function HomeItem() {
                                     <Text
                                         as={'span'}
                                         color={'home.link'}
-                                        ms={'3px'}>@{post.author.userName} • 4h</Text>
+                                        ms={'3px'}>@{post.author.userName} • {post.timeAgo}</Text>
                                 </Text>
 
                                 <Text
                                     fontSize={'12px'}
                                     mt={'5px'}>{post.content}</Text>
+
+                                {post.image !== null && <Image src={post.image}/>}
+
                                 <Text
                                     mt={'15px'}
                                     display={'flex'}
                                     fontSize={'20px'}
                                     alignItems={'center'}>
-                                    <LikeButton postId={post.id} />
+                                    <LikeButtonPost postId={post.id} />
                                     <Text
                                         as={'span'}
                                         color={'home.link'}

@@ -1,8 +1,8 @@
 import { Box, Button, Card, Heading, HStack, Image, Text, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import { ButtonLink } from "../../button/link";
-import { ProfileModal } from "../modal/profile-modal";
 import { useUser } from "../../hooks/use-user";
+import { ProfileModal } from "../modal/profile-modal";
 
 
 export function ProfileCard() {
@@ -64,28 +64,23 @@ export function ProfileCard() {
                     marginLeft={'10px'}
                     color={'nav.text'}
                     bg={'transparent'}>
-                    
                         <Text
                             bg={'transparent'}
                             fontWeight="bold"
                             fontSize="14px">✨ {data?.fullName} ✨</Text>
 
-                    
                         <Text
                             bg={'transparent'}
                             color={'nav.link'}
                             fontSize="11px">@{data?.userName}</Text>
-
 
                         <Text
                             bg={'transparent'}
                             fontSize="11px">{data?.bio}</Text>
 
                     <HStack bg={'transparent'}>
-                        
-                            <Text fontSize="11px" bg={'transparent'}>{data?.following} <Text color={'nav.link'} as={'span'} bg={'transparent'}>Following</Text></Text>
-                        
-                            <Text fontSize="11px" bg={'transparent'}>{data?.followers} <Text color={'nav.link'} as={'span'} bg={'transparent'}>Followers</Text></Text>
+                            <Text fontSize="11px" bg={'transparent'}> {data?.following || 0} <Text color={'nav.link'} as={'span'} bg={'transparent'}>Following</Text></Text>
+                            <Text fontSize="11px" bg={'transparent'}>{data?.followers || 0} <Text color={'nav.link'} as={'span'} bg={'transparent'}>Followers</Text></Text>
                     </HStack>
                 </Box>
             </Box>

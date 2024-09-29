@@ -31,7 +31,7 @@ export function PostModal({ isOpen, onClose, initialRef, finalRef }: InitialFocu
                     overflow="auto"
                     background="#1D1D1D"
                     borderRadius={"15px"}>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
                         <ModalBody pb={6}>
                             <Box
                                 mb="10px"

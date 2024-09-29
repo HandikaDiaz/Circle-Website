@@ -4,7 +4,13 @@ import { usePost } from "../../hooks/use-post";
 import { ErrorMessage } from "../../../auth/schemas/error";
 
 export function HomePost() {
-    const { register, handleSubmit, errors, onSubmit, isSubmitting } = usePost();
+    const { register, handleSubmit, errors, onSubmit, isSubmitting, isLoading } = usePost();
+
+    if(isLoading) {
+        return (
+            <Box color={'home.text'}>Loading...</Box>
+        )
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
@@ -50,15 +56,15 @@ export function HomePost() {
                 </Box>
 
                 <Box display={'flex'}>
-                    {/* <FormControl>
+                    <FormControl>
                         <FormLabel
                             cursor={'pointer'}
                             display={'flex'}
                             color={'home.button.hoverText'}
                             fontSize={'25px'}><LuImagePlus /></FormLabel>
-                        <Input type='file' {...register('image')} hidden />
+                        <Input type='file' {...register('image')} hidden name="image"/>
                         <ErrorMessage message={errors.image?.message || ''} />
-                    </FormControl> */}
+                    </FormControl>
 
                     <Button
                         type='submit'

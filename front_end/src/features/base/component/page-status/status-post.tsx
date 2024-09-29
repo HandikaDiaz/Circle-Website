@@ -3,10 +3,15 @@ import { FaComments, FaHeart } from "react-icons/fa";
 import { usePostDetail } from "../../hooks/use-status";
 import { ButtonLink } from "../../button/link";
 import { useParams } from "react-router-dom";
+import { format } from 'date-fns';
 
 export function StatusPost() {
     const { postId } = useParams<{ postId: string }>();
     const { postDetail, isLoading, error } = usePostDetail(parseInt(postId!));
+    function formatCreatedAt(dateString : any) {
+        const date = new Date(dateString);
+        return format(date, "hh:mm a • MMM dd yyyy");
+    }
     
     return (
         <Box
@@ -28,7 +33,7 @@ export function StatusPost() {
                 <ButtonLink to={"/profile-people"}>
                     <Box ms={'10px'} fontSize={'12px'}>
                             <Text fontWeight={'bold'}>{postDetail?.author.fullName}</Text>
-                            <Text color={'home.link'}>@{postDetail?.author.userName} • 4h</Text>
+                            <Text color={'home.link'}>@{postDetail?.author.userName} • {postDetail?.timeAgo}</Text>
                     </Box>
                 </ButtonLink>
             </Box>
@@ -40,7 +45,7 @@ export function StatusPost() {
                 <Text
                     fontSize={'12px'}
                     color={'home.link'}
-                    mt={'10px'}>11:32 PM • Jul 26 2023</Text>
+                    mt={'10px'}>11:32 PM • Jul 26 2023{formatCreatedAt(postDetail?.createdAt)}</Text>
 
                 <Text
                     mt={'10px'}
@@ -49,6 +54,7 @@ export function StatusPost() {
                     alignItems={'center'}>
                     <FaHeart style={{ color: 'red' }} />
                     <Text
+                        ms={'5px'}
                         as={'span'}
                         fontSize={'12px'}
                         color={'home.link'}>{postDetail?.likesCount}</Text>

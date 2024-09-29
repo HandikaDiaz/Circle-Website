@@ -9,7 +9,7 @@ export function ProfileStatus() {
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
     const { data } = useUser();
-
+    
     return (
         <Box
             mt={'10px'}

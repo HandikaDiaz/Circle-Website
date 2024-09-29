@@ -1,7 +1,6 @@
 
-import { Box } from "@chakra-ui/react";
-import { AccFollowCard } from "../component/card/acc-follow-card";
-import { SearchInput } from "../component/page-search/search-input";
+import { Box, Text } from "@chakra-ui/react";
+import { FollowItem } from "../component/page-follow/follow-item";
 
 export function FollowLayout() {
     return (
@@ -11,9 +10,9 @@ export function FollowLayout() {
             pb={'20px'}
             alignItems={'center'}
             justifyContent={'center'}>
+            <Text color={'home.text'} as={'h1'}>Follow Account</Text>
 
-            <SearchInput />
-            <AccFollowCard />
+            <FollowItem />
         </Box>
     )
 }

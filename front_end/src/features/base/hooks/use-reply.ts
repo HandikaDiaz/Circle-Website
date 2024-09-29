@@ -7,56 +7,40 @@ import { CreateReplyFormInput, replySchema } from '../schemas/reply.schema';
 import { CreateReplyDTO } from '../types/reply.dto';
 import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { useAllReplies } from './use-all';
 
 export function useReplyForm() {
-    const { postId } = useParams<{ postId: string }>();
-
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting }, } = useForm<CreateReplyFormInput>({
             resolver: zodResolver(replySchema)
         });
-
-    async function getReply() {
-        const response = await apiV1.get<null, { data: ReplyEntity[] }>(
-            `/post/${postId}/reply`, {
-            headers: {
-                Authorization: `Bearer ${Cookies.get("token")}`
-            }
-        }
-        );
-        return response.data;
-    }
-
+    const { postId } = useParams<{ postId: string }>();
     const queryClient = useQueryClient();
-    const { data, isLoading } = useQuery<ReplyEntity[], Error, ReplyEntity[]>({
-        queryKey: ['post', postId],
-        queryFn: getReply,
-        enabled: !!postId,
-    });
 
     async function createReply(data: CreateReplyDTO) {
         const replyData = { ...data, postId };
-        console.log("Reply data to send:", replyData);
 
-        const response = await apiV1.post<null, { data: ReplyEntity }>(
+        const response = await apiV1.post(
             `/post/${postId}/reply`, replyData, {
             headers: {
-                Authorization: `Bearer ${Cookies.get("token")}`
+                Authorization: `Bearer ${Cookies.get("token")}`,
+                'Content-Type': 'multipart/form-data',
             }
         }
         );
 
+        useAllReplies();
         queryClient.invalidateQueries({ queryKey: ['reply-post', postId] });
         return response.data;
     }
 
     const { mutateAsync: createReplyAsync } = useMutation<
-        ReplyEntity,
+        CreateReplyDTO,
         Error,
         CreateReplyDTO>({
-            mutationKey: ['createReply', postId],
+            mutationKey: ['createReply'],
             mutationFn: createReply,
         })
 
@@ -75,8 +59,6 @@ export function useReplyForm() {
         handleSubmit,
         errors,
         isSubmitting,
-        onSubmit,
-        data,
-        isLoading,
+        onSubmit
     };
 }

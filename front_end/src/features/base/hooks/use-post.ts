@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from 'js-cookie';
 import { useForm } from 'react-hook-form';
-import { PostEntity } from '../../../entities/post-entity';
+import { GetPostEntity } from '../../../entities/post-entity';
 import { apiV1 } from '../../../libs/api';
 import { useAppSelector } from '../../../store/hooks/use.store';
 import { CreatePostFormInput, postSchema } from '../schemas/post.schema';
@@ -20,13 +20,13 @@ export function usePost() {
     const { id: authorId } = useAppSelector((state) => state.auth);
 
     async function getPosts() {
-        const response = await apiV1.get<null, { data: PostEntity[] }>(
+        const response = await apiV1.get<null, { data: GetPostEntity[] }>(
             `/post/${authorId}`
         );
         return response.data;
     }
 
-    const { data, isLoading } = useQuery<PostEntity[], Error, PostEntity[]>({
+    const { data, isLoading } = useQuery<GetPostEntity[], Error, GetPostEntity[]>({
         queryKey: ['post', authorId],
         queryFn: getPosts,
     });
@@ -36,7 +36,7 @@ export function usePost() {
         formData.append('content', data.content ?? '');
         formData.append('authorId', authorId.toString());
         if (data.image) {
-            formData.append('image', data.image);
+            formData.append('image', data.image[0]);
         }
         const response = await apiV1.post(
             `/post`, formData, {
@@ -44,10 +44,9 @@ export function usePost() {
                 Authorization: `Bearer ${Cookies.get("token")}`,
                 'Content-Type': 'multipart/form-data',
             }
-        }
-        );
+        });
 
-        queryClient.invalidateQueries({ queryKey: ['post', authorId] });
+        queryClient.invalidateQueries({ queryKey: ['posts', authorId] });
         return response.data;
     }
 
@@ -67,6 +66,7 @@ export function usePost() {
         };
         try {
             await createPostAsync(postData);
+            queryClient.invalidateQueries({ queryKey: ['posts'] });
             reset();
             alert("Post created successfully!");
         } catch (error) {

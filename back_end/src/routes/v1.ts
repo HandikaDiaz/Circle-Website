@@ -5,8 +5,10 @@ import replyController from "../controllers/reply.controller";
 import userController from "../controllers/user.controller";
 import { authentication } from "../middlewares/authenticationMiddleware";
 import { catchAsync } from "../utils/catch.async";
-import upload from "../middlewares/uploadImageMiddleware";
+import upload from "../middlewares/uploadImage";
 import LikeController from "../controllers/like.controller";
+import FollowController from "../controllers/follow.controller";
+import { searchController } from "../controllers/search.controller";
 
 export const routerV1 = express.Router();
 
@@ -25,10 +27,11 @@ routerV1.post("/auth/login", catchAsync(authController.login));
 routerV1.get("/auth/check", catchAsync(authentication), catchAsync(authController.check));
 
 // Mengupdate data pengguna
-routerV1.put("/user", upload.single('image'), catchAsync(userController.update));
+routerV1.put("/user", catchAsync(authentication), catchAsync(userController.update));
 
 // Mendapatkan semua data 
 routerV1.get("/getUser", catchAsync(authentication), catchAsync(userController.getUser));
+routerV1.get("/getUserById/:userId", catchAsync(userController.getUserById.bind(userController)));
 routerV1.get("/getAllUser", catchAsync(authentication), catchAsync(userController.getAllUser));
 routerV1.get("/getAllPost", catchAsync(postController.getAllPost));
 
@@ -43,15 +46,21 @@ routerV1.get("/post/:postId/reply", catchAsync(authentication), catchAsync(reply
 
 // Mendapatkan semua post berdasarkan ID
 routerV1.get("/post/:authorId", catchAsync(postController.getPostByAuthor));
+routerV1.get("/profile/post/:userId", catchAsync(postController.getPostByUserId));
 
 // Menyukai sebuah postingan
 routerV1.post("/post/:postId/like", catchAsync(authentication), catchAsync(LikeController.likePost));
 // Mendapatkan semua like dari sebuah post
 routerV1.get("/post/:postId/like", catchAsync(authentication), catchAsync(LikeController.getLikes));
 
+
+// routerV1.get("/follow", catchAsync(authentication), catchAsync(FollowController.getFollows));
+routerV1.get("/follow/:userId", catchAsync(authentication), catchAsync(FollowController.checkFollowStatus));
+routerV1.patch('/follow/:userId', catchAsync(authentication), catchAsync(FollowController.toggleFollow));
+
 /** Rute yang Dapat Diaktifkan di Masa Depan (Rute Komentar) **/
 // Rute untuk pencarian post
-// routerV1.get('/search', catchAsync(searchController));
+routerV1.get('/search', catchAsync(authentication), catchAsync(searchController));
 
 // Update post berdasarkan ID
 // routerV1.put("/post/:id", catchAsync(postController.updatePost));

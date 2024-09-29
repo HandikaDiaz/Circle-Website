@@ -3,7 +3,8 @@ import { SideLeftNavbar } from "../../features/base/component/nav/left-nav";
 import { SideRightNavbar } from "../../features/base/component/nav/right-nav"; // Import the Profile right navbar
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks/use.store";
-import { SideRightProfileNavbar } from "../../features/base/component/nav/right-profile-nav";
+import { SideRightNoSgNavbar } from "../../features/base/component/nav/right-nosg-nav";
+import { SideRightFollowNavbar } from "../../features/base/component/nav/right-follow-profile";
 
 export function Base() {
     const user = useAppSelector((state) => state.auth);
@@ -13,6 +14,7 @@ export function Base() {
     if (!user.id) return <Navigate to={"/login"} />;
 
     const isProfilePage = location.pathname.includes('/profile');
+    const isThesePage = location.pathname.includes('/follow') || location.pathname.includes('/search');
 
     return (
         <Box display={'flex'} width={'100%'} height={'100vh'} bg={'#1D1D1D'} overflowY={'auto'}>
@@ -23,7 +25,7 @@ export function Base() {
                 <Outlet />
             </Box>
             <Box flex={1.5} overflowY={'auto'}>
-                {isProfilePage ? <SideRightProfileNavbar /> : <SideRightNavbar />}
+                {isProfilePage ? <SideRightNoSgNavbar /> : isThesePage ? <SideRightFollowNavbar /> : <SideRightNavbar />}
             </Box>
         </Box>
     );

@@ -1,9 +1,10 @@
-import { PostEntity } from "../../../entities/post-entity";
+import { CreatePostEntity } from "../../../entities/post-entity";
 
-export type PostDTO = PostEntity;
+export type PostDTO = CreatePostEntity;
 
 export type CreatePostDTO = Pick<
-    PostEntity,
+    CreatePostEntity,
     'content' | 'image'> & {
         authorId: number;
     };
+

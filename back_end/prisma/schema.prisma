@@ -75,14 +75,16 @@ model Reply {
 }
 
 model Follow {
-  id          Int      @id @default(autoincrement())
-  followerId  Int
-  follower    User     @relation("Followers", fields: [followerId], references: [id])
+  id         Int  @id @default(autoincrement())
+  followerId Int
+  follower   User @relation("Followers", fields: [followerId], references: [id])
 
   followingId Int
-  following   User     @relation("Following", fields: [followingId], references: [id])
+  following   User @relation("Following", fields: [followingId], references: [id])
 
-  createdAt   DateTime @default(now())
+  isFollowing Boolean @default(false)
+
+  createdAt DateTime @default(now())
 
   @@unique([followerId, followingId])
 }

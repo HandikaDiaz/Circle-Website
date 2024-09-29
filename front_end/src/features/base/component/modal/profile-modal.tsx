@@ -12,7 +12,7 @@ interface InitialFocusModalProps {
 }
 
 export function ProfileModal({ isOpen, onClose, initialRef, finalRef }: InitialFocusModalProps) {
-    const { register, handleSubmit, errors, onSubmit } = useUser();
+    const { register, handleSubmit, errors, onSubmit, data } = useUser();
     return (
         <>
             <Modal
@@ -105,6 +105,7 @@ export function ProfileModal({ isOpen, onClose, initialRef, finalRef }: InitialF
                                                 border={'none'}
                                                 fontSize={'14px'}
                                                 color={'home.text'}
+                                                value={data?.fullName}
                                                 {...register("fullName")}
                                                 _focusVisible={{
                                                     borderColor: "transparent",
@@ -127,6 +128,7 @@ export function ProfileModal({ isOpen, onClose, initialRef, finalRef }: InitialF
                                                 border={'none'}
                                                 fontSize={'14px'}
                                                 color={'home.text'}
+                                                value={data?.userName}
                                                 {...register("userName")}
                                                 _focusVisible={{
                                                     borderColor: "transparent",
@@ -148,6 +150,7 @@ export function ProfileModal({ isOpen, onClose, initialRef, finalRef }: InitialF
                                                 resize={'none'}
                                                 border={'none'}
                                                 fontSize={'14px'}
+                                                value={data?.bio}
                                                 color={'home.text'}
                                                 {...register("bio")}
                                                 _focusVisible={{

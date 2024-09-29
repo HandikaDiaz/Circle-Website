@@ -29,18 +29,23 @@ export function StatusReply() {
                         borderRadius='500px'
                         src='https://bit.ly/dan-abramov' />
 
-                    <Textarea
-                        rows={1}
+                    <Input
+                        type='text'
                         ms={'13px'}
-                        width={'300px'}
                         border={'none'}
-                        resize={'none'}
+                        width={'300px'}
+                        height={'25px'}
                         fontSize={'14px'}
                         color={'home.text'}
                         fontWeight={'bold'}
                         {...register('content')}
                         placeholder="Type your reply!"
-                    />
+                        _focusVisible={{
+                            borderColor: "transparent",
+                        }}
+                        _hover={{
+                            borderColor: "transparent",
+                        }} />
                 </Box>
 
                 <Box display={'flex'}>

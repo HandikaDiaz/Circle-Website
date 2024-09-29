@@ -5,7 +5,7 @@ import { CustomError } from "../middlewares/errorHandler";
 const prisma = new PrismaClient();
 
 class UserService {
-    async getUser(userId: number): Promise<Omit<User, "password"> | null> {
+    async getUser(userId: number): Promise<Omit<User, "password"> & { _count: { followers: number; following: number } } | null> {
         const user = await prisma.user.findUnique({
             where: {
                 id: userId
@@ -16,21 +16,49 @@ class UserService {
                 userName: true,
                 bio: true,
                 email: true,
-                followers: true,
-                following: true,
+                _count: {
+                    select: {
+                        followers: true,
+                        following: true,
+                    },
+                },
                 role: true,
                 createdAt: true,
-                updatedAt: true
+                updatedAt: true,
             }
         });
         return user
     };
 
+    async getUserById(id: number): Promise<Omit<User, "password"> & { _count: { followers: number; following: number } } | null> {
+        const user = await prisma.user.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                fullName: true,
+                userName: true,
+                bio: true,
+                email: true,
+                _count: {
+                    select: {
+                        followers: true,
+                        following: true,
+                    },
+                },
+                role: true,
+                createdAt: true,
+                updatedAt: true,
+            }
+        });
+        return user
+    }
+
+
     async updateUser(id: number, data: UpdateUserDTO
     ): Promise<{ user: Pick<User, "fullName" | "userName" | "bio" | "id"> }> {
         const user = await prisma.user.findUnique({
             where: {
-                id: 1
+                id
             }
         });
 
@@ -39,7 +67,7 @@ class UserService {
         };
 
         const updateUser = await prisma.user.update({
-            where: { id: 1 },
+            where: { id },
             data: {
                 fullName: data.fullName || user.fullName,
                 userName: data.userName || user.userName,

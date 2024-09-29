@@ -52,7 +52,7 @@ export function AppRouter() {
                     element: <ProfileLayout />,
                 },
                 {
-                    path: "profile-people",
+                    path: "profile-people/:userId",
                     element: <ProfilePeopleLayout />,
                 },
                 {

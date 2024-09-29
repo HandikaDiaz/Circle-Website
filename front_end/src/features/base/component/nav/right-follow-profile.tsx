@@ -1,11 +1,11 @@
 import { Box } from "@chakra-ui/react";
 import { MetaCard } from "../card/meta-card";
-import { SuggestionCard } from "../card/suggestion-card";
+import { ProfileCard } from "../card/profile-card";
 
-export function SideRightProfileNavbar() {
+export function SideRightFollowNavbar() {
     return (
         <Box>
-            <SuggestionCard />
+            <ProfileCard />
             <MetaCard />    
         </Box>
     )
