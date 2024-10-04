@@ -1,0 +1,76 @@
+import { Box, Image, Text } from "@chakra-ui/react";
+import { FaComments } from "react-icons/fa";
+import LikeButtonPost from "../../base/button/like";
+import { ButtonLink } from "../../base/button/link";
+import { useAllPosts } from "../../base/hooks/use-all";
+import { DeletePostButton } from "../hooks/deletePost";
+
+export function DeletePost() {
+    const { data, refetch } = useAllPosts();
+    return (
+        <>
+            {data?.map((post) => {
+                return (
+                    <Box
+                        mt={'20px'}
+                        px={'25px'}
+                        pb={'15px'}
+                        color={'home.text'}
+                        display={'flex'}
+                        justifyContent={'center'}
+                        alignItems={'center'}
+                        borderBottom={'1px solid #3F3F3F'}>
+                        <Box
+                            display={'flex'}>
+                            <Image
+                                alt=''
+                                boxSize='40px'
+                                borderRadius='500px'
+                                src={post.author.image} />
+
+                            <Box ms={'10px'} w={'430px'}>
+                                <Text
+                                    fontSize={'12px'}
+                                    fontWeight={'bold'}>{post.author.fullName}
+                                    <Text
+                                        as={'span'}
+                                        color={'home.link'}
+                                        ms={'3px'}>@{post.author.userName} • {post.timeAgo}</Text>
+                                </Text>
+
+                                <Text
+                                    fontSize={'12px'}
+                                    mt={'5px'}>{post.content}</Text>
+
+                                {post.image !== null && <Image my={'13px'} src={post.image} />}
+
+                                <Text
+                                    mt={'15px'}
+                                    display={'flex'}
+                                    fontSize={'20px'}
+                                    alignItems={'center'}>
+                                    <LikeButtonPost postId={1} />
+                                    <Text
+                                        as={'span'}
+                                        color={'home.link'}
+                                        fontSize={'12px'}></Text>
+
+                                    <FaComments style={{ color: '#909090', marginLeft: '20px' }} />
+                                    <ButtonLink to="" display={'flex'}>
+                                        <Text
+                                            ms={'5px'}
+                                            as={'span'}
+                                            color={'home.link'}
+                                            fontSize={'12px'}>{post.repliesCount} Replies</Text>
+                                    </ButtonLink>
+                                </Text>
+                            </Box>
+                            <DeletePostButton postId={post.id} onSuccess={refetch}>
+                            </DeletePostButton>
+                        </Box>
+                    </Box>
+                )
+            })}
+        </>
+    )
+}
