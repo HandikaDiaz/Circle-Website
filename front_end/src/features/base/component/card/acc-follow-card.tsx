@@ -15,7 +15,7 @@ export function AccFollowCard() {
         return shuffled.slice(0, 3);
     };
     useEffect(() => {
-        if (data) {
+        if (data && randomUsers.length === 0) {
             const selectedUsers = getRandomUsers(data);
             setRandomUsers(selectedUsers);
         }
@@ -42,7 +42,7 @@ export function AccFollowCard() {
                                 boxSize='40px'
                                 display={'block'}
                                 borderRadius='500px'
-                                src='https://bit.ly/dan-abramov' />
+                                src={user.image} />
 
                             <ButtonLink textDecoration={'none'} state={user.id} to={`/profile-people/${user.id}`} bg={'none'}>
                                 <Text

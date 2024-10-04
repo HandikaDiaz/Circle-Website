@@ -33,7 +33,7 @@ export function ProfileCard() {
                     height={'100px'}
                     display={'block'}
                     borderRadius='10px'
-                    src='https://wallpapercave.com/wp/wp4566576.jpg' />
+                    src={data?.background} />
 
                 <Image
                     top={'115px'}
@@ -43,7 +43,7 @@ export function ProfileCard() {
                     borderRadius='500px'
                     position={'absolute'}
                     border={'3px solid black'}
-                    src='https://bit.ly/dan-abramov' />
+                    src={data?.image} />
 
                 <Button
                     width={'25%'}

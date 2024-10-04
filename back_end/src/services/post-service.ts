@@ -1,5 +1,7 @@
 import { Post, PrismaClient, Reply   } from "@prisma/client";
 import { CreatePostDTO, UpdatePostDTO } from "../dto/post.dto";
+import { CustomError } from "../middlewares/errorHandler";
+import { log } from "console";
 
 const prisma = new PrismaClient();
 
@@ -9,6 +11,7 @@ class postService {
             where: { authorId },
             include: {
                 reply: true,
+                like: true,
                 author: {
                     select: {
                         id: true,
@@ -20,7 +23,8 @@ class postService {
                         followers: true,
                         following: true,
                         role: true,
-                        updatedAt: true
+                        updatedAt: true,
+                        image: true
                     }
                 }
             },
@@ -31,7 +35,7 @@ class postService {
         const postsWithReplyCount = post.map((post) => {
             return {
                 ...post,
-                repliesCount: post.reply.length
+                repliesCount: post.reply.length,
             };
         });
 
@@ -48,7 +52,8 @@ class postService {
                 author: {
                     select: {
                         fullName: true,
-                        userName: true
+                        userName: true,
+                        image: true
                     }
                 }
             }
@@ -71,7 +76,8 @@ class postService {
                         followers: true,
                         following: true,
                         role: true,
-                        updatedAt: true
+                        updatedAt: true,
+                        image: true
                     }
                 }
             },
@@ -121,8 +127,46 @@ class postService {
     }
 
     async deletePost(id: number): Promise<Post | null> {
+        const post = await prisma.post.findUnique({
+            where: { id },
+        });
+        
+        if (!post) {
+            return null;
+        }
+
+        await prisma.post.deleteMany({
+            where: { authorId: id }
+        });
+
+        await prisma.reply.deleteMany({
+            where: {
+                AND: [
+                    { authorId: id },
+                    { postId: id }
+                ]
+            }
+        });
+
+        await prisma.like.deleteMany({
+            where: {
+                post: {
+                    authorId: id
+                }
+            }
+        });
+
+        await prisma.follow.deleteMany({
+            where: {
+                OR: [
+                    { followerId: id },
+                    { followingId: id }
+                ]
+            }
+        });
+
         return await prisma.post.delete({
-            where: { id }
+            where: { id },
         });
     }
 };

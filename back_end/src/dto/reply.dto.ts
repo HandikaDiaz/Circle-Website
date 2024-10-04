@@ -2,6 +2,7 @@ export type ReplyDTO = {
     image?: string;
     content?: string;
     postId: number;
+    authorId: number;
 }
 
 export type UpdateReplyDTO = {

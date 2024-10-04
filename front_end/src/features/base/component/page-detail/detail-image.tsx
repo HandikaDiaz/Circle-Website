@@ -1,7 +1,12 @@
 
 import { Box, Image } from "@chakra-ui/react";
 
-export function DetailImage() {
+interface DetailImageProps {
+    selectedImage: string | null;
+}
+
+export function DetailImage({ selectedImage }: DetailImageProps) {
+    if (!selectedImage) return null; 
     return(
         <Box 
             mx={'auto'} 
@@ -12,11 +17,11 @@ export function DetailImage() {
             alignItems={'center'} 
             justifyContent={'center'}>
             <Image
-                onClick={() => window.open("https://img.lazcdn.com/g/p/fec87e282c953e23ab04692123dfc38c.jpg_960x960q80.jpg_.webp")}
+                onClick={() => window.open(selectedImage)}
                 cursor={'pointer'}
                 width={'auto'}
                 height={'auto'}
-                src="https://img.lazcdn.com/g/p/fec87e282c953e23ab04692123dfc38c.jpg_960x960q80.jpg_.webp" />
+                src={selectedImage}/>
         </Box>
     )
 }

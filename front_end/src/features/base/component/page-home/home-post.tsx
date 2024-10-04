@@ -1,14 +1,18 @@
-import { Box, Button, FormControl, FormLabel, Input, Image } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, Image, Spinner } from "@chakra-ui/react";
 import { LuImagePlus } from "react-icons/lu";
 import { usePost } from "../../hooks/use-post";
 import { ErrorMessage } from "../../../auth/schemas/error";
+import { useUser } from "../../hooks/use-user";
 
 export function HomePost() {
     const { register, handleSubmit, errors, onSubmit, isSubmitting, isLoading } = usePost();
+    const { data } = useUser();
 
-    if(isLoading) {
+    if (isLoading) {
         return (
-            <Box color={'home.text'}>Loading...</Box>
+            <Box display="flex" alignItems="center" justifyContent="center" height="50vh">
+                <Spinner size="xl" color="home.text" />
+            </Box>
         )
     }
 
@@ -33,7 +37,7 @@ export function HomePost() {
                         boxSize='40px'
                         display={'block'}
                         borderRadius='500px'
-                        src='https://bit.ly/dan-abramov' />
+                        src={data?.image} />
 
                     <Input
                         type='text'
@@ -62,7 +66,7 @@ export function HomePost() {
                             display={'flex'}
                             color={'home.button.hoverText'}
                             fontSize={'25px'}><LuImagePlus /></FormLabel>
-                        <Input type='file' {...register('image')} hidden name="image"/>
+                        <Input type='file' {...register('image')} hidden name="image" />
                         <ErrorMessage message={errors.image?.message || ''} />
                     </FormControl>
 
@@ -79,7 +83,9 @@ export function HomePost() {
                         disabled={isSubmitting}
                         color={'home.button.text'}
                         backgroundColor={'home.button.background'}
-                        _hover={{ backgroundColor: 'home.button.hoverBackground', color: 'home.button.hoverText' }}>Post</Button>
+                        _hover={{ backgroundColor: 'home.button.hoverBackground', color: 'home.button.hoverText' }}>
+                        {isSubmitting ? <Spinner size="sm" /> : 'Post'}
+                    </Button>
                 </Box>
             </Box>
         </form>

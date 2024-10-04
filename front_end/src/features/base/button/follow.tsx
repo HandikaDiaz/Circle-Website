@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from "react";
 import { apiV1 } from "../../../libs/api";
@@ -11,17 +12,23 @@ const FollowButton: React.FC<FollowButtonProps> = ({ userId }) => {
     const [isFollow, setIsFollow] = React.useState(false);
     const [buttonText, setButtonText] = useState<string>("Follow");
 
+    const queryClient = useQueryClient();
+
     useEffect(() => {
         const fetchFollow = async () => {
-            const response = await apiV1.get(`/follow/${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get("token")}`
-                }
-            });
+            try {
+                const response = await apiV1.get(`/follow/${userId}`, {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get("token")}`
+                    }
+                });
 
-            setIsFollow(response.data.isFollowing);
-            setButtonText(response.data.isFollowing ? "Following" : "Follow");
-        }
+                setIsFollow(response.data.isFollowing);
+                setButtonText(response.data.isFollowing ? "Following" : "Follow");
+            } catch (error) {
+                console.error("Error fetching follow status:", error);
+            }
+        };
         fetchFollow();
     }, [userId]);
 
@@ -36,6 +43,10 @@ const FollowButton: React.FC<FollowButtonProps> = ({ userId }) => {
 
             setIsFollow(newFollowStatus);
             setButtonText(newFollowStatus ? "Following" : "Follow");
+
+            queryClient.invalidateQueries(['user', userId]);
+            queryClient.invalidateQueries(['follow-status', userId]);
+
         } catch (error) {
             console.error("Error toggling follow status:", error);
         }

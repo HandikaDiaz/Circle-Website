@@ -1,5 +1,5 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserStoreDTO } from "../features/auth/types/dto";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: UserStoreDTO = {} as UserStoreDTO;
 

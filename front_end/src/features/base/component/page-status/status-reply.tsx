@@ -1,13 +1,16 @@
 import { Box, Button, FormControl, FormLabel, Input, Image, Textarea } from "@chakra-ui/react";
 import { LuImagePlus } from "react-icons/lu";
 import { useReplyForm } from "../../hooks/use-reply";
+import { ErrorMessage } from "../../../auth/schemas/error";
+import { useUser } from "../../hooks/use-user";
 
 
 export function StatusReply() {
     const { register, handleSubmit, errors, onSubmit } = useReplyForm();
+    const { data } = useUser();
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
             <Box
                 mt={'20px'}
                 px={'25px'}
@@ -27,7 +30,7 @@ export function StatusReply() {
                         boxSize='40px'
                         display={'block'}
                         borderRadius='500px'
-                        src='https://bit.ly/dan-abramov' />
+                        src={data?.image} />
 
                     <Input
                         type='text'
@@ -49,13 +52,15 @@ export function StatusReply() {
                 </Box>
 
                 <Box display={'flex'}>
-                    {/* <FormControl>
+                <FormControl>
                         <FormLabel
+                            cursor={'pointer'}
                             display={'flex'}
                             color={'home.button.hoverText'}
                             fontSize={'25px'}><LuImagePlus /></FormLabel>
-                        <Input type='file' hidden />
-                    </FormControl> */}
+                        <Input type='file' {...register('image')} hidden name="image"/>
+                        <ErrorMessage message={errors.image?.message || ''} />
+                    </FormControl>
 
                     <Button
                         type='submit'

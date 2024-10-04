@@ -17,7 +17,7 @@ export function useAllPosts() {
         return response.data;
     }
 
-    const { data, isLoading } = useQuery<GetPostEntity[], Error, GetPostEntity[]>({
+    const { data, isLoading, refetch } = useQuery<GetPostEntity[], Error, GetPostEntity[]>({
         queryKey: ['posts'],
         queryFn: getAllPosts,
     });
@@ -25,13 +25,38 @@ export function useAllPosts() {
     return {
         data,
         isLoading,
-        getAllPosts
+        getAllPosts,
+        refetch
     }
 }
 
 export function useAllReplies() {
     const { postId } = useParams<{ postId: string }>();
     async function getAllReplies() {
+        const response = await apiV1.get<null, { data: ReplyEntity[] }>(
+            `/post/${postId}/reply`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`
+            }
+        });
+        return response.data;
+    }
+
+    const { data, isLoading } = useQuery<ReplyEntity[], Error>({
+        queryKey: ['reply-post', postId],
+        queryFn: getAllReplies,
+        enabled: !!postId,
+    });
+
+    return {
+        data,
+        isLoading
+    }
+}
+
+export function useMediaReplies(postId: number | null) {
+    async function getAllReplies() {
+        if (!postId) return [];
         const response = await apiV1.get<null, { data: ReplyEntity[] }>(
             `/post/${postId}/reply`, {
             headers: {

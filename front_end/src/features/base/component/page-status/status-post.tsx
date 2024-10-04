@@ -4,15 +4,24 @@ import { usePostDetail } from "../../hooks/use-status";
 import { ButtonLink } from "../../button/link";
 import { useParams } from "react-router-dom";
 import { format } from 'date-fns';
+import LikeButtonPost from "../../button/like";
 
 export function StatusPost() {
     const { postId } = useParams<{ postId: string }>();
     const { postDetail, isLoading, error } = usePostDetail(parseInt(postId!));
-    function formatCreatedAt(dateString : any) {
-        const date = new Date(dateString);
-        return format(date, "hh:mm a • MMM dd yyyy");
+    function formatCreatedAt(dateString: any) {
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) {
+                throw new Error("Invalid date");
+            }
+            return format(date, "hh:mm a • MMM dd yyyy");
+        } catch (error) {
+            console.log(error);
+            return "";
+        }
     }
-    
+
     return (
         <Box
             mt={'10px'}
@@ -28,12 +37,12 @@ export function StatusPost() {
                     alt=''
                     boxSize='40px'
                     borderRadius='500px'
-                    src='https://bit.ly/dan-abramov' />
+                    src={postDetail?.author.image} />
 
                 <ButtonLink to={"/profile-people"}>
                     <Box ms={'10px'} fontSize={'12px'}>
-                            <Text fontWeight={'bold'}>{postDetail?.author.fullName}</Text>
-                            <Text color={'home.link'}>@{postDetail?.author.userName} • {postDetail?.timeAgo}</Text>
+                        <Text fontWeight={'bold'}>{postDetail?.author.fullName}</Text>
+                        <Text color={'home.link'}>@{postDetail?.author.userName} • {postDetail?.timeAgo}</Text>
                     </Box>
                 </ButtonLink>
             </Box>
@@ -42,17 +51,18 @@ export function StatusPost() {
                 <Text mt={'5px'}>
                     {postDetail?.content}
                 </Text>
+                {postDetail?.image !== null && <Image my={'13px'} src={postDetail?.image} />}
                 <Text
                     fontSize={'12px'}
                     color={'home.link'}
-                    mt={'10px'}>11:32 PM • Jul 26 2023{formatCreatedAt(postDetail?.createdAt)}</Text>
+                    mt={'10px'}>{postDetail?.createdAt ? formatCreatedAt(postDetail.createdAt) : "Date not available"}</Text>
 
                 <Text
                     mt={'10px'}
                     display={'flex'}
                     fontSize={'20px'}
                     alignItems={'center'}>
-                    <FaHeart style={{ color: 'red' }} />
+                    <LikeButtonPost postId={postDetail?.id} />
                     <Text
                         ms={'5px'}
                         as={'span'}

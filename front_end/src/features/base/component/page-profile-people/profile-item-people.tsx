@@ -30,7 +30,7 @@ export function ProfilePostPeople() {
                                 alt=''
                                 boxSize='40px'
                                 borderRadius='500px'
-                                src='https://bit.ly/dan-abramov' />
+                                src={post.author.image} />
 
                             <Box ms={'10px'}>
                                 <Text fontSize={'12px'} fontWeight={'bold'}>{post.author.fullName} <Text as={'span'} color={'#909090'} ms={'3px'}>@{post.author.userName} • 4h</Text></Text>

@@ -11,6 +11,8 @@ import { ResetRoute } from "./auth/reset";
 import { Base } from "./base/base";
 import { AuthLayout } from "../features/auth/layout/layout";
 import { FollowLayout } from "../features/base/layout/follow-layout";
+import { Admin } from "./admin/admin";
+import { AdminPost } from "../features/admin/components/adminpost";
 
 export function AppRouter() {
     const router = createBrowserRouter([
@@ -32,6 +34,16 @@ export function AppRouter() {
                 {
                     path: "/forgot",
                     element: <ForgotRoute />,
+                },
+            ]
+        },
+        {
+            path: "admin",
+            element: <Admin />,
+            children: [
+                {
+                    index: true,
+                    element: <AdminPost />,
                 },
             ]
         },

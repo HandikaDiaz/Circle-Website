@@ -1,10 +1,8 @@
-import { Box, Text, VStack, Image } from "@chakra-ui/react";
+import { Box, Image, Text } from "@chakra-ui/react";
 import { UserEntity } from "../../../../entities/user-entity";
-import { SearchNoResult } from "./search-no-result";
-import { FaComments } from "react-icons/fa";
-import LikeButton from "../../button/like";
-import { ButtonLink } from "../../button/link";
 import FollowButton from "../../button/follow";
+import { ButtonLink } from "../../button/link";
+import { SearchNoResult } from "./search-no-result";
 
 interface SearchResultProps {
     result: UserEntity[];
@@ -38,7 +36,7 @@ export function SearchResult({ result }: SearchResultProps) {
                                 boxSize='40px'
                                 display={'block'}
                                 borderRadius='500px'
-                                src='https://bit.ly/dan-abramov' />
+                                src={user.image} />
 
                             <ButtonLink textDecoration={'none'} state={user.id} to={`/profile-people/${user.id}`} bg={'none'}>
                                 <Text

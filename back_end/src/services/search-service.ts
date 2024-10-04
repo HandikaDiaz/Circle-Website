@@ -23,6 +23,7 @@ export const searchService = async (query: string, userId: number) => {
             email: true,
             fullName: true,
             userName: true,
+            image: true
         }
     })
 }

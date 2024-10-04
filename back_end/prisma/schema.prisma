@@ -18,11 +18,13 @@ model User {
   email    String @unique
   password String
 
-  fullName  String?
-  userName  String?
-  bio       String?
-  following Follow[] @relation("Following")
-  followers Follow[] @relation("Followers")
+  fullName   String?
+  userName   String?
+  bio        String?
+  image      String?  @default("https://i.pinimg.com/originals/74/71/e7/7471e7903b23f5c49a82a021f61db7d9.jpg")
+  background String?  @default("https://wallpapercave.com/wp/wp4566576.jpg")
+  following  Follow[] @relation("Following")
+  followers  Follow[] @relation("Followers")
 
   role RoleEnum @default(MEMBER)
 
@@ -50,7 +52,7 @@ model Post {
   like  Like[]
 
   authorId Int
-  author   User @relation(fields: [authorId], references: [id])
+  author   User @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@map("post")
 }
@@ -66,10 +68,10 @@ model Reply {
   updatedAt DateTime @updatedAt
 
   postId Int
-  post   Post @relation(fields: [postId], references: [id])
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   authorId Int
-  author   User @relation(fields: [authorId], references: [id])
+  author   User @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@map("reply")
 }
@@ -77,10 +79,10 @@ model Reply {
 model Follow {
   id         Int  @id @default(autoincrement())
   followerId Int
-  follower   User @relation("Followers", fields: [followerId], references: [id])
+  follower   User @relation("Followers", fields: [followerId], references: [id], onDelete: Cascade)
 
   followingId Int
-  following   User @relation("Following", fields: [followingId], references: [id])
+  following   User @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
 
   isFollowing Boolean @default(false)
 

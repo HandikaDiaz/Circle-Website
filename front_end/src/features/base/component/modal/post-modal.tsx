@@ -3,6 +3,8 @@ import { Avatar, Box, Button, FormControl, FormLabel, Input, Modal, ModalBody, M
 import { RefObject } from "react";
 import { LuImagePlus } from "react-icons/lu";
 import { usePost } from "../../hooks/use-post";
+import { ErrorMessage } from "../../../auth/schemas/error";
+import { useUser } from "../../hooks/use-user";
 
 interface InitialFocusModalProps {
     isOpen: boolean;
@@ -13,7 +15,8 @@ interface InitialFocusModalProps {
 
 export function PostModal({ isOpen, onClose, initialRef, finalRef }: InitialFocusModalProps) {
     const { register, handleSubmit, errors, onSubmit, isLoading } = usePost();
-
+    const { data } = useUser();
+    
     return (
         <>
             <Modal
@@ -51,7 +54,7 @@ export function PostModal({ isOpen, onClose, initialRef, finalRef }: InitialFocu
                             </Box>
 
                             <FormControl display="flex">
-                                <Avatar src={'https://bit.ly/dan-abramov'}></Avatar>
+                                <Avatar src={data?.image}></Avatar>
 
                                 <Textarea
                                     width="100%"
@@ -81,7 +84,8 @@ export function PostModal({ isOpen, onClose, initialRef, finalRef }: InitialFocu
                                 cursor={'pointer'}
                                 color={'home.button.hoverText'}
                                 fontSize={'30px'}><LuImagePlus /></FormLabel>
-                            <Input type='file' {...register('image')} hidden />
+                            <Input type='file' {...register('image')} hidden name="image"/>
+                            <ErrorMessage message={errors.image?.message || ''} />
                         </FormControl>
                         <Button
                             border={'none'}

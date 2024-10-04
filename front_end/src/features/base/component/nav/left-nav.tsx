@@ -1,19 +1,34 @@
 import { Box, Button, Heading, ListItem, Text, UnorderedList, useDisclosure } from "@chakra-ui/react";
+import Cookies from 'js-cookie';
 import React from "react";
 import { CgProfile } from "react-icons/cg";
 import { FaHome } from "react-icons/fa";
 import { IoHeartOutline } from "react-icons/io5";
-import { RiUserSearchLine } from "react-icons/ri";
+import { RiDashboardHorizontalFill, RiUserSearchLine } from "react-icons/ri";
 import { TbLogout2 } from "react-icons/tb";
 import { ButtonLink } from "../../button/link";
-import { PostModal } from "../modal/post-modal";
 import { useLogout } from "../../hooks/use-logout";
+import { PostModal } from "../modal/post-modal";
 
 export function SideLeftNavbar() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const initialRef = React.useRef(null)
     const finalRef = React.useRef(null)
     const logout = useLogout();
+    const token = Cookies.get("token");
+    let userLogin = null;
+    if (token) {
+        try {
+            const payloadBase64 = token.split('.')[1];
+            if (payloadBase64) {
+                const decodedPayload = JSON.parse(atob(payloadBase64));
+                userLogin = decodedPayload;
+            }
+
+        } catch (error) {
+            console.error('Failed to decode token:', error);
+        }
+    }
 
     return (
         <Box>
@@ -33,7 +48,7 @@ export function SideLeftNavbar() {
                 fontSize={'20px'}
                 color={'#FFFFFF'}
                 marginTop={'15px'}
-                listStyleType={'none'}  
+                listStyleType={'none'}
                 flexDirection={'column'}>
 
                 <ListItem
@@ -75,6 +90,20 @@ export function SideLeftNavbar() {
                     <ButtonLink color={'nav.text'} to={"/profile"}>Profile</ButtonLink>
                 </ListItem>
 
+                {userLogin && userLogin.role === "ADMIN" ? (
+                    <ListItem
+                        gap={'5px'}
+                        color={'nav.text'}
+                        display={'flex'}
+                        alignItems={'center'}
+                        textDecoration={'none'}>
+                        <RiDashboardHorizontalFill style={{ marginRight: '10px' }} />
+                        <ButtonLink color={'nav.text'} to={"/admin"}>Dashboard</ButtonLink>
+                    </ListItem>
+                ) : (
+                    <ListItem mb={'10px'} style={{ height: '20px' }} />
+                )}
+
                 <ListItem
                     gap={'5px'}
                     color={'nav.text'}
@@ -102,7 +131,7 @@ export function SideLeftNavbar() {
                 display={'flex'}
                 color={'nav.text'}
                 fontSize={'20px'}
-                marginTop={'220px'}
+                marginTop={'165px'}
                 marginLeft={'20px'}
                 alignItems={'center'}
                 textDecoration={'none'}>

@@ -1,8 +1,9 @@
-import { ReplyEntity } from "../../../entities/repyl-entity";
+import { CreateReplyEntity } from "../../../entities/repyl-entity";
 
-export type ReplyDTO = ReplyEntity;
+export type ReplyDTO = CreateReplyEntity;
 
 export type CreateReplyDTO = Pick<
-    ReplyEntity, 
-    'content' | 'image'
->;
+    CreateReplyEntity,
+    'content' | 'image'> & {
+        postId: number;
+    };

@@ -3,6 +3,7 @@ import { Avatar, Box, Button, FormControl, FormLabel, Image, Input, Modal, Modal
 import { RefObject } from "react";
 import { LuImagePlus } from "react-icons/lu";
 import { useUser } from "../../hooks/use-user";
+import { ErrorMessage } from "../../../auth/schemas/error";
 
 interface InitialFocusModalProps {
     isOpen: boolean;
@@ -50,24 +51,22 @@ export function ProfileModal({ isOpen, onClose, initialRef, finalRef }: InitialF
                             </Box>
 
                             <Box>
-                                <Image
-                                    width={'100%'}
-                                    height={'125px'}
-                                    display={'block'}
-                                    borderRadius='10px'
-                                    src='https://wallpapercave.com/wp/wp4566576.jpg' />
-
+                                <FormControl>
+                                    <FormLabel>
+                                        <Image
+                                            width={'100%'}
+                                            height={'125px'}
+                                            display={'block'}
+                                            borderRadius='10px'
+                                            src={data?.background} />
+                                    </FormLabel>
+                                    <Input type='file' {...register('background')} hidden name="background" />
+                                </FormControl>
                                 <Box
                                     mt={'-35px'}
                                     display={'flex'}
                                     alignItems={'center'}>
-                                    <Avatar
-                                        ms={'20px'}
-                                        boxSize='80px'
-                                        display={'block'}
-                                        borderRadius='500px'
-                                        border={'3px solid black'}
-                                        src='https://bit.ly/dan-abramov' />
+
 
                                     <FormControl>
                                         <FormLabel
@@ -75,17 +74,16 @@ export function ProfileModal({ isOpen, onClose, initialRef, finalRef }: InitialF
                                             fontSize={'30px'}
                                             cursor={'pointer'}
                                             color={'home.button.hoverText'}>
-                                            <Box
-                                                mt={'8px'}
-                                                ms={'-59px'}
-                                                bg={'#323232'}
-                                                color={'white'}
-                                                padding={'7px'}
-                                                fontSize={'20px'}
-                                                borderRadius={'full'}>
-                                                <LuImagePlus />
-                                            </Box></FormLabel>
-                                        <Input type='file' hidden />
+                                            <Avatar
+                                                ms={'20px'}
+                                                boxSize='80px'
+                                                display={'block'}
+                                                borderRadius='500px'
+                                                border={'3px solid black'}
+                                                src={data?.image} />
+                                        </FormLabel>
+                                        <Input type='file' {...register('image')} hidden name="image" />
+                                        <ErrorMessage message={errors.image?.message || ''} />
                                     </FormControl>
                                 </Box>
 
@@ -105,8 +103,8 @@ export function ProfileModal({ isOpen, onClose, initialRef, finalRef }: InitialF
                                                 border={'none'}
                                                 fontSize={'14px'}
                                                 color={'home.text'}
-                                                value={data?.fullName}
                                                 {...register("fullName")}
+                                                defaultValue={data?.fullName}
                                                 _focusVisible={{
                                                     borderColor: "transparent",
                                                 }}
@@ -128,8 +126,8 @@ export function ProfileModal({ isOpen, onClose, initialRef, finalRef }: InitialF
                                                 border={'none'}
                                                 fontSize={'14px'}
                                                 color={'home.text'}
-                                                value={data?.userName}
                                                 {...register("userName")}
+                                                defaultValue={data?.userName}
                                                 _focusVisible={{
                                                     borderColor: "transparent",
                                                 }}

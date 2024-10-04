@@ -8,6 +8,7 @@ import { useAppDispatch } from '../../../store/hooks/use.store';
 import { LoginFormInput, loginSchema } from '../schemas/login.schema';
 import { LoginRequestDTO, LoginResponseDTO } from '../types/login.dto';
 import { apiV1 } from '../../../libs/api';
+import { useToast } from '@chakra-ui/react';
 
 export function useLoginForm() {
     const {
@@ -20,6 +21,7 @@ export function useLoginForm() {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const toast = useToast();
 
     async function onSubmit(data: LoginFormInput) {
         try {
@@ -32,12 +34,24 @@ export function useLoginForm() {
 
             dispatch(setUser(user));
             Cookies.set('token', token, { expires: 1 });
-            navigate('/', {replace: true});
-            
-            console.log(data);
-            console.log(response.data);
+
+            toast({
+                title: "Login successful!",
+                description: `Welcome back, ${user.fullName}!`,
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+                position: "top",
+            });
+
+            if (user.role === 'ADMIN') {
+                navigate('/admin', { replace: true });
+            } else {
+                navigate('/', { replace: true });
+            }
         } catch (error) {
             console.log("Error:", error);
+            let errorMessage = "Something wrong!!";
 
             if (axios.isAxiosError(error) && error.response) {
                 const stackMessage = error.response.data.message;
@@ -55,6 +69,14 @@ export function useLoginForm() {
             } else {
                 console.log("Other Error:", error);
             }
+            toast({
+                title: "Login failed!",
+                description: errorMessage,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "top",
+            });
         }
     };
     return {

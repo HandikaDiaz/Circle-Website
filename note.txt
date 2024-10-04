@@ -1,0 +1,14 @@
+=======
+1 September 2024
+=======
+- Menambahkan status post, create reply by post dan item reply di detail image
+- Menambahkan fungsi role pada be dan fe
+- Menambahkan beberapa slicing untuk role admin(dashboard)
+- Menambahkan fitur be delete user dan delete post yang hanaya bisa dilakukan oleh role admin
+
+=======
+2 September 2024
+=======
+- Memperbaiki item post berdasarkan user
+- Membuat integrasi delete user dan post di fe
+- Memperbaiki fungsi like dan follow 

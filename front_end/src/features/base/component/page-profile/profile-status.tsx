@@ -20,7 +20,7 @@ export function ProfileStatus() {
                 height={'100px'}
                 display={'block'}
                 borderRadius='10px'
-                src='https://wallpapercave.com/wp/wp4566576.jpg' />
+                src={data?.background} />
 
             <Box
                 mt={'-35px'}
@@ -33,7 +33,7 @@ export function ProfileStatus() {
                     display={'block'}
                     borderRadius='500px'
                     border={'3px solid black'}
-                    src='https://bit.ly/dan-abramov' />
+                    src={data?.image} />
 
                 <Button
                     mt={'45px'}

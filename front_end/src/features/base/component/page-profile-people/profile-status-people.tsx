@@ -2,15 +2,16 @@ import { Box, Button, HStack, Image, Text } from "@chakra-ui/react";
 import { useAllUsersById } from "../../hooks/use-all";
 import { ButtonLink } from "../../button/link";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FollowButton from "../../button/follow";
 
 export function ProfileStatusPeople() {
     const { data } = useAllUsersById();
     const { userId } = useParams<{ userId: string }>();
+    const navigate = useNavigate();
     return (
         <>
-            <ButtonLink to={"/"} textDecoration={'none'}>
+            <ButtonLink to={""}  onClick={() => navigate(-1)} textDecoration={'none'}>
                 <Text
                     as={'h2'}
                     mt={'15px'}
@@ -31,7 +32,7 @@ export function ProfileStatusPeople() {
                     height={'100px'}
                     display={'block'}
                     borderRadius='10px'
-                    src='https://wallpapercave.com/wp/wp4566576.jpg' />
+                    src={data?.background} />
 
                 <Box
                     mt={'-35px'}
@@ -45,7 +46,7 @@ export function ProfileStatusPeople() {
                         display={'block'}
                         borderRadius='500px'
                         border={'3px solid black'}
-                        src='https://bit.ly/dan-abramov' />
+                        src={data?.image} />
 
                     <Text
                         mt={'50px'}

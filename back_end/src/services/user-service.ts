@@ -25,6 +25,8 @@ class UserService {
                 role: true,
                 createdAt: true,
                 updatedAt: true,
+                image: true,
+                background: true
             }
         });
         return user
@@ -48,6 +50,8 @@ class UserService {
                 role: true,
                 createdAt: true,
                 updatedAt: true,
+                image: true,
+                background: true
             }
         });
         return user
@@ -55,7 +59,7 @@ class UserService {
 
 
     async updateUser(id: number, data: UpdateUserDTO
-    ): Promise<{ user: Pick<User, "fullName" | "userName" | "bio" | "id"> }> {
+    ): Promise<{ user: Pick<User, "fullName" | "userName" | "bio" | "image" | "id" | "background"> }> {
         const user = await prisma.user.findUnique({
             where: {
                 id
@@ -71,19 +75,72 @@ class UserService {
             data: {
                 fullName: data.fullName || user.fullName,
                 userName: data.userName || user.userName,
-                bio: data.bio || user.bio
+                bio: data.bio || user.bio,
+                image: data.image || user.image,
+                background: data.background || user.background
             },
             select: {
                 id: true,
                 fullName: true,
                 userName: true,
                 bio: true,
+                image: true,
+                background: true
             }
         })
 
         return {
             user: updateUser
         };
+    }
+
+    async deleteUser(id: number): Promise<User | null> {
+        const user = await prisma.user.findUnique({
+            where: { id },
+        });
+
+        if (!user) {
+            return null;
+        }
+
+        await prisma.follow.deleteMany({
+            where: {
+                OR: [
+                    { followerId: id },
+                    { followingId: id }
+                ]
+            }
+        });
+
+        await prisma.like.deleteMany({
+            where: { userId: id }
+        });
+
+        await prisma.reply.deleteMany({
+            where: { authorId: id }
+        });
+
+        const posts = await prisma.post.findMany({
+            where: { authorId: id }
+        });
+
+        for (const post of posts) {
+            await prisma.reply.deleteMany({
+                where: { postId: post.id }
+            });
+
+            await prisma.like.deleteMany({
+                where: { postId: post.id }
+            });
+
+            await prisma.post.delete({
+                where: { id: post.id }
+            });
+        }
+
+        return await prisma.user.delete({
+            where: { id },
+        });
     }
 }
 

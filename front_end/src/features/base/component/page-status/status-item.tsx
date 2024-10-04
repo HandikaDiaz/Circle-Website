@@ -1,12 +1,10 @@
 import { Box, Image, Text } from "@chakra-ui/react";
-import { FaComments, FaHeart } from "react-icons/fa";
-import { ButtonLink } from "../../button/link";
-import { useAllReplies } from "../../hooks/use-all";
 import LikeButton from "../../button/like";
+import { useAllReplies } from "../../hooks/use-all";
 
 export function StatusItem() {
     const { data } = useAllReplies();
-
+    
     return (
         <>
             {data?.map((reply) => {
@@ -24,7 +22,7 @@ export function StatusItem() {
                                 alt=''
                                 boxSize='40px'
                                 borderRadius='500px'
-                                src='https://bit.ly/dan-abramov' />
+                                src={reply.author.image} />
 
                             <Box ms={'10px'}>
                                 <Text
@@ -33,12 +31,15 @@ export function StatusItem() {
                                     <Text
                                         as={'span'}
                                         color={'home.link'}
-                                        ms={'3px'}>@{reply.author.userName} • 4h</Text>
+                                        ms={'3px'}>@{reply.author.userName} • {reply.timeAgo}</Text>
                                 </Text>
 
                                 <Text
                                     fontSize={'12px'}
                                     mt={'5px'}>{reply.content}</Text>
+
+                                {reply.image !== null && <Image my={'13px'} src={reply.image} />}
+
                                 <Text
                                     mt={'15px'}
                                     display={'flex'}

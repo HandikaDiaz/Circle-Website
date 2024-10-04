@@ -3,22 +3,39 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { apiV1 } from '../../../libs/api';
 import { removeUser } from '../../../store/auth.slice';
+import { useToast } from '@chakra-ui/react';
 
 export function useLogout() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const toast = useToast();
 
     const logout = async () => {
-        try {
-            await apiV1.post('/logout');
+        const logoutPromise = apiV1.post('/logout').then(() => {
             Cookies.remove('token');
             dispatch(removeUser());
-            
             navigate('/login', { replace: true });
-            alert("Logout successful!");
+        });
+
+        try {
+            await logoutPromise;
+            toast({
+                title: 'Logout successful!',
+                description: 'You have been logged out.',
+                status: 'success',
+                position: 'top',
+                duration: 3000,
+                isClosable: true,
+            });
         } catch (error) {
-            console.error("Error during logout:", error);
-            alert("Logout failed.");
+            toast({
+                title: 'Logout failed',
+                description: 'An error occurred during logout.',
+                status: 'error',
+                position: 'top',
+                duration: 3000,
+                isClosable: true,
+            });
         }
     };
 

@@ -1,10 +1,28 @@
+import Cookies from 'js-cookie';
 import { Navigate, Outlet } from "react-router-dom";
-import { useAppSelector } from "../../../store/hooks/use.store";
 
 export function AuthLayout() {
-    const user = useAppSelector((state) => state.auth);
+    const token = Cookies.get("token");
+    let userLogin = null;
+    if (token) {
+        try {
+            const payloadBase64 = token.split('.')[1];
+            if (payloadBase64) {
+                const decodedPayload = JSON.parse(atob(payloadBase64));
+                userLogin = decodedPayload;
+            }
 
-    if (user.id) return <Navigate to={"/"} />;
+        } catch (error) {
+            console.error('Failed to decode token:', error);
+        }
+    }
+    if (userLogin) {
+        if (userLogin.role === "ADMIN") {
+            return <Navigate to={"/admin"} />;
+        } else {
+            return <Navigate to={"/"} />;
+        }
+    }
 
     return <Outlet />;
 }

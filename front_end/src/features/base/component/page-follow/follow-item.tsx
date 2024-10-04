@@ -27,7 +27,7 @@ export function FollowItem() {
                                 boxSize='40px'
                                 display={'block'}
                                 borderRadius='500px'
-                                src='https://bit.ly/dan-abramov' />
+                                src={user.image} />
 
                             <ButtonLink textDecoration={'none'} state={user.id} to={`/profile-people/${user.id}`} bg={'none'}>
                                 <Text

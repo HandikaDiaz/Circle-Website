@@ -13,7 +13,7 @@ class AuthService {
         const salt = 10;
         const hashedPassword = await bcrypt.hash(data.password, salt);
         const userName = data.email.split('@')[0];
-        
+
         const user = await prisma.user.create({
             data: {
                 ...data,
@@ -24,11 +24,11 @@ class AuthService {
 
         const { password, ...userToSign } = user;
         const token = jwt.sign(
-            {id : user.id, email: user.email},
+            { id: user.id, email: user.email },
             process.env.JWT_SECRET as string,
-            {expiresIn: '1d'}
+            { expiresIn: '1d' }
         )
-        return { 
+        return {
             user: userToSign,
             token
         };
@@ -37,9 +37,12 @@ class AuthService {
     async login(
         data: LoginDTO
     ): Promise<{ user: Omit<User, "password">; token: string }> {
-        const user = await prisma.user.findUnique({
+        const user = await prisma.user.findFirst({
             where: {
-                email: data.email,
+                OR: [
+                    { email: data.email },
+                    { userName: data.userName }
+                ],
             },
         });
 

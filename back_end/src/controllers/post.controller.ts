@@ -11,13 +11,15 @@ import { formatTimeAgo } from "../middlewares/timeAgo";
 const prisma = new PrismaClient();
 
 class postController {
-    async getAllPost(req: Request, res: Response) {
+    async getAllPost(req: RequestWithUser, res: Response) {
         const posts = await prisma.post.findMany({
             include: {
+                like: true,
                 author: {
                     select: {
                         fullName: true,
-                        userName: true
+                        userName: true,
+                        image: true
                     }
                 },
             },
@@ -25,16 +27,19 @@ class postController {
         })
         const postWithTimeAgo = posts.map((post) => ({
             ...post,
+            isLike: post.like.some((like) => like.userId === req.user.id),
             timeAgo: formatTimeAgo(new Date(post.createdAt))
         }))
+        
         res.json(postWithTimeAgo)
     }
 
     async getPostByAuthor(req: RequestWithUser, res: Response) {
         const authorId = Number(req.params.authorId)
-        const post = await postService.getAllPosts(authorId); 
+        const post = await postService.getAllPosts(authorId);
         const postWithTimeAgo = post.map((post) => ({
             ...post,
+            likesCount: post.likesCount,
             timeAgo: formatTimeAgo(new Date(post.createdAt))
         }))
         res.json(postWithTimeAgo)
@@ -60,12 +65,16 @@ class postController {
             ...post,
             timeAgo: formatTimeAgo(new Date(post.createdAt))
         };
-        res.json({data: postWithTimeAgo})
+        res.json({ data: postWithTimeAgo })
     }
 
     async createPost(req: RequestWithUser, res: Response) {
-        const image = await cloudinaryService.upload(req.file)
-        const body = {...req.body, image: image.secure_url}
+        let imageUrl: string | undefined;
+        if (req.file) {
+            const image = await cloudinaryService.upload(req.file);
+            imageUrl = image.secure_url;
+        }
+        const body = { ...req.body, ...(imageUrl && { image: imageUrl }) }
         const value = await postSchema.validateAsync(body);
         const createPost = await postService.createPost(value, req.user.id);
         res.json(createPost)
@@ -80,8 +89,14 @@ class postController {
 
     async deletePost(req: RequestWithUser, res: Response) {
         const id = Number(req.params.id);
+        if (!req.user || req.user.role !== 'ADMIN') {
+            throw new CustomError("You do not have permission to delete this post", 403);
+        }
         const deletePost = await postService.deletePost(id);
-        res.json(deletePost);
+        if (!deletePost) {
+            throw new CustomError("Post not found", 404);
+        }
+        res.json({post: deletePost});
     }
 }
 

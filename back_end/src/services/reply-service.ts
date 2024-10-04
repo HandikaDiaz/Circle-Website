@@ -12,29 +12,29 @@ class replyService {
                     select: {
                         fullName: true,
                         userName: true,
+                        image: true
                     }
                 }
+            },orderBy: {
+                createdAt: 'desc'
             }
         });
     };
 
-    async createReply(data: ReplyDTO, authorId: number): Promise<Reply | null> {
-        if (!data.postId) {
-            throw new Error('Post ID is required to create a reply.');
-        }
+    async createReply(data: ReplyDTO, authorId: number, postId: number): Promise<Reply | null> {
         const newReply = await prisma.reply.create({
             data: {
                 content: data.content,
                 image: data.image || null,
-                postId: data.postId,
-                authorId: authorId
+                postId,
+                authorId
             }
         });
         const replyCount = await prisma.reply.count({
-            where: { postId: data.postId }
+            where: { postId }
         });
         await prisma.post.update({
-            where: { id: data.postId },
+            where: { id: postId },
             data: { repliesCount: replyCount }
         });
         return newReply;
