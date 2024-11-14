@@ -1,6 +1,6 @@
 import { Box, Image, Text } from "@chakra-ui/react";
 import { FaComments } from "react-icons/fa";
-import LikeButtonPost from "../../base/button/like";
+import LikeButtonPost from "../../base/button/likePost";
 import { ButtonLink } from "../../base/button/link";
 import { useAllPosts } from "../../base/hooks/use-all";
 import { DeletePostButton } from "../hooks/deletePost";
@@ -49,14 +49,14 @@ export function DeletePost() {
                                     display={'flex'}
                                     fontSize={'20px'}
                                     alignItems={'center'}>
-                                    <LikeButtonPost postId={1} />
+                                    <LikeButtonPost postId={post.id} />
                                     <Text
                                         as={'span'}
                                         color={'home.link'}
-                                        fontSize={'12px'}></Text>
+                                        fontSize={'12px'}>{post.likesCount}</Text>
 
                                     <FaComments style={{ color: '#909090', marginLeft: '20px' }} />
-                                    <ButtonLink to="" display={'flex'}>
+                                    <ButtonLink state={post.id} to={`/status/${post.id}`} display={'flex'}>
                                         <Text
                                             ms={'5px'}
                                             as={'span'}

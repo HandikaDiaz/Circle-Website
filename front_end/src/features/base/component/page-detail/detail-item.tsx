@@ -1,5 +1,5 @@
 import { Box, Image, Text } from "@chakra-ui/react";
-import LikeButton from "../../button/like";
+import LikeButton from "../../button/likePost";
 import { useMediaReplies } from "../../hooks/use-all";
 
 interface DetailItemProps {

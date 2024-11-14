@@ -1,14 +1,15 @@
 import { Box, Image, Text } from "@chakra-ui/react";
-import { FaComments, FaHeart } from "react-icons/fa";
-import { usePostDetail } from "../../hooks/use-status";
-import { ButtonLink } from "../../button/link";
-import { useParams } from "react-router-dom";
 import { format } from 'date-fns';
-import LikeButtonPost from "../../button/like";
+import { FaComments } from "react-icons/fa";
+import { useParams } from "react-router-dom";
+import LikeButtonPost from "../../button/likePost";
+import { ButtonLink } from "../../button/link";
+import { usePostDetail } from "../../hooks/use-status";
 
 export function StatusPost() {
     const { postId } = useParams<{ postId: string }>();
-    const { postDetail, isLoading, error } = usePostDetail(parseInt(postId!));
+    const { postDetail } = usePostDetail(parseInt(postId!));
+    
     function formatCreatedAt(dateString: any) {
         try {
             const date = new Date(dateString);

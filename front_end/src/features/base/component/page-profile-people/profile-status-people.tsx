@@ -1,9 +1,9 @@
-import { Box, Button, HStack, Image, Text } from "@chakra-ui/react";
-import { useAllUsersById } from "../../hooks/use-all";
-import { ButtonLink } from "../../button/link";
+import { Box, HStack, Image, Text } from "@chakra-ui/react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import FollowButton from "../../button/follow";
+import { ButtonLink } from "../../button/link";
+import { useAllUsersById } from "../../hooks/use-all";
 
 export function ProfileStatusPeople() {
     const { data } = useAllUsersById();

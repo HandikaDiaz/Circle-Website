@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import Cookies from 'js-cookie';
 import { Navigate, Outlet } from "react-router-dom";
 import { SideLeftNavbar } from "../../features/base/component/nav/left-nav";
-import { SideRightNavbar } from "../../features/base/component/nav/right-nav"; // Import the Profile right navbar
+import { SideRightNavbar } from "../../features/base/component/nav/right-nav";
 
 export function Admin() {
     const token = Cookies.get("token");

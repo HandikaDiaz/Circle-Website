@@ -1,12 +1,11 @@
-import { Request, Response } from "express";
-import { postSchema } from "../utils/schema/post.schema";
-import postService from "../services/post-service";
-import { RequestWithUser } from "../types/post";
 import { PrismaClient } from "@prisma/client";
-import cloudinaryService from "../services/cloudinary.service";
-import { formatDistanceToNow } from 'date-fns';
+import { Response } from "express";
 import { CustomError } from "../middlewares/errorHandler";
 import { formatTimeAgo } from "../middlewares/timeAgo";
+import cloudinaryService from "../services/cloudinary.service";
+import postService from "../services/post-service";
+import { RequestWithUser } from "../types/post";
+import { postSchema } from "../utils/schema/post.schema";
 
 const prisma = new PrismaClient();
 

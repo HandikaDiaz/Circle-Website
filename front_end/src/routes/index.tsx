@@ -28,7 +28,7 @@ export function AppRouter() {
                     element: <RegisterRoute />,
                 },
                 {
-                    path: "/reset",
+                    path: "/reset/:token",
                     element: <ResetRoute />,
                 },
                 {

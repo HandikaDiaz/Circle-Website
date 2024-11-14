@@ -1,9 +1,8 @@
 // import {  } from "@chakra-ui/modal";
 import { Avatar, Box, Button, FormControl, FormLabel, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Text, Textarea } from "@chakra-ui/react";
 import { RefObject } from "react";
-import { LuImagePlus } from "react-icons/lu";
-import { useUser } from "../../hooks/use-user";
 import { ErrorMessage } from "../../../auth/schemas/error";
+import { useUser } from "../../hooks/use-user";
 
 interface InitialFocusModalProps {
     isOpen: boolean;
@@ -57,10 +56,11 @@ export function ProfileModal({ isOpen, onClose, initialRef, finalRef }: InitialF
                                             width={'100%'}
                                             height={'125px'}
                                             display={'block'}
+                                            cursor={'pointer'}
                                             borderRadius='10px'
                                             src={data?.background} />
                                     </FormLabel>
-                                    <Input type='file' {...register('background')} hidden name="background" />
+                                    <Input type='file' {...register('background')} hidden name="background" width={'1px'}/>
                                 </FormControl>
                                 <Box
                                     mt={'-35px'}
@@ -71,6 +71,7 @@ export function ProfileModal({ isOpen, onClose, initialRef, finalRef }: InitialF
                                     <FormControl>
                                         <FormLabel
                                             display={'flex'}
+                                            width={'1px'}
                                             fontSize={'30px'}
                                             cursor={'pointer'}
                                             color={'home.button.hoverText'}>
@@ -82,7 +83,7 @@ export function ProfileModal({ isOpen, onClose, initialRef, finalRef }: InitialF
                                                 border={'3px solid black'}
                                                 src={data?.image} />
                                         </FormLabel>
-                                        <Input type='file' {...register('image')} hidden name="image" />
+                                        <Input type='file' {...register('image')} hidden name="image" width={'1px'}/>
                                         <ErrorMessage message={errors.image?.message || ''} />
                                     </FormControl>
                                 </Box>

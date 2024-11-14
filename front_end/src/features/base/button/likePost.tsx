@@ -11,19 +11,19 @@ interface LikeButtonProps {
 
 const LikeButtonPost: React.FC<LikeButtonProps> = ({ postId }: any) => {
     const [isLiked, setIsLiked] = React.useState(false);
-    const [likeCount, setLikeCount] = React.useState(0);
+    const [, setLikeCount] = React.useState(0);
     const queryClient = useQueryClient();
 
+    const fetchLike = async () => {
+        const response = await apiV1.get(`/post/${postId}/like`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`
+            }
+        });
+        setIsLiked(response.data.isLiked);
+        setLikeCount(response.data.likesCount);
+    }
     useEffect(() => {
-        const fetchLike = async () => {
-            const response = await apiV1.get(`/post/${postId}/like`, {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get("token")}`
-                }
-            });
-            setIsLiked(response.data.isLiked);
-            setLikeCount(response.data.likesCount);
-        }
         fetchLike();
     }, [postId]);
 
@@ -42,6 +42,12 @@ const LikeButtonPost: React.FC<LikeButtonProps> = ({ postId }: any) => {
                     newLikedStatus ? prevCount + 1 : prevCount - 1
                 );
                 return newLikedStatus;
+            });
+
+            queryClient.invalidateQueries({
+                predicate: (query) => {
+                    return query.queryKey[0] === 'post' && query.queryKey[1] === +postId
+                }
             });
             queryClient.invalidateQueries({ queryKey: ['posts'] });
         },

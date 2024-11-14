@@ -1,6 +1,6 @@
 import { Box, Heading, Image, Text } from "@chakra-ui/react";
 import { FaComments } from "react-icons/fa";
-import LikeButton from "../../button/like";
+import LikeButton from "../../button/likePost";
 import { ButtonLink } from "../../button/link";
 import { usePostProfile } from "../../hooks/use-profile";
 

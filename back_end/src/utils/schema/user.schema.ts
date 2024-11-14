@@ -1,6 +1,5 @@
 import Joi from 'joi'
 import { UpdateUserDTO } from '../../dto/user.dto'
-import { background } from '@chakra-ui/react'
 
 export const updateUserSchema = Joi.object<UpdateUserDTO>({
     fullName: Joi.string().min(3).max(100),

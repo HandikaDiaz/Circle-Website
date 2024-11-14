@@ -1,10 +1,10 @@
 import { Box, Button, Heading, Image, Text, useDisclosure } from "@chakra-ui/react";
-import { FaComments, FaHeart } from "react-icons/fa";
-import { usePost } from "../../hooks/use-post";
-import { ButtonLink } from "../../button/link";
-import { PostModal } from "../modal/post-modal";
 import React from "react";
-import LikeButtonPost from "../../button/like";
+import { FaComments } from "react-icons/fa";
+import LikeButtonPost from "../../button/likePost";
+import { ButtonLink } from "../../button/link";
+import { usePost } from "../../hooks/use-post";
+import { PostModal } from "../modal/post-modal";
 
 
 export function ProfilePost() {

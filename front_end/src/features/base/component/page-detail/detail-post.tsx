@@ -1,7 +1,6 @@
 import { Box, Image, Text } from "@chakra-ui/react";
 import { format } from 'date-fns';
-import { FaComments } from "react-icons/fa";
-import LikeButtonPost from "../../button/like";
+import LikeButtonPost from "../../button/likePost";
 import { ButtonLink } from "../../button/link";
 import { usePostDetail } from "../../hooks/use-status";
 

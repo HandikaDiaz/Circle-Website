@@ -1,6 +1,6 @@
 import { Box, Image, Text, useDisclosure } from "@chakra-ui/react";
 import { FaComments } from "react-icons/fa";
-import LikeButtonPost from "../../button/like";
+import LikeButtonPost from "../../button/likePost";
 import { ButtonLink } from "../../button/link";
 import { useAllPosts } from "../../hooks/use-all";
 import { DetailLayout } from "../../layout/detail-layout";

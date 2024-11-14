@@ -1,8 +1,7 @@
 import { Box, Heading, Image, useDisclosure } from "@chakra-ui/react";
-import { usePostProfile } from "../../hooks/use-profile";
 import React, { useState } from "react";
+import { usePostProfile } from "../../hooks/use-profile";
 import { DetailLayout } from "../../layout/detail-layout";
-import { useMediaReplies } from "../../hooks/use-all";
 
 
 export function ProfileMediaPeople() {

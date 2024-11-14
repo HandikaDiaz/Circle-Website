@@ -1,10 +1,10 @@
-import { Button, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+import { ButtonLink } from "../button/link";
 import { StatusItem } from "../component/page-status/status-item";
 import { StatusPost } from "../component/page-status/status-post";
 import { StatusReply } from "../component/page-status/status-reply";
-import { ButtonLink } from "../button/link";
-import { useNavigate } from "react-router-dom";
 
 export function StatusLayout() {
     const navigate = useNavigate();

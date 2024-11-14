@@ -5,7 +5,10 @@ export type RegisterDTO = {
 }
 
 export type LoginDTO = {
-    email: string;
     userName: string;
     password: string;
+}
+
+export type forgotPasswordDTO = {
+    userName: string;
 }

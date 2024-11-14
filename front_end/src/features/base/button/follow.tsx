@@ -1,4 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from "react";
 import { apiV1 } from "../../../libs/api";
@@ -9,47 +9,49 @@ interface FollowButtonProps {
 }
 
 const FollowButton: React.FC<FollowButtonProps> = ({ userId }) => {
-    const [isFollow, setIsFollow] = React.useState(false);
+    const [, setIsFollow] = React.useState(false);
     const [buttonText, setButtonText] = useState<string>("Follow");
-
     const queryClient = useQueryClient();
 
-    useEffect(() => {
-        const fetchFollow = async () => {
-            try {
-                const response = await apiV1.get(`/follow/${userId}`, {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get("token")}`
-                    }
-                });
+    const fetchFollow = async () => {
+        try {
+            const response = await apiV1.get(`/follow/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get("token")}`
+                }
+            }); 
 
-                setIsFollow(response.data.isFollowing);
-                setButtonText(response.data.isFollowing ? "Following" : "Follow");
-            } catch (error) {
-                console.error("Error fetching follow status:", error);
-            }
-        };
+            setIsFollow(response.data.isFollowing);
+            setButtonText(response.data.isFollowing ? "Following" : "Follow");
+        } catch (error) {
+            console.error("Error fetching follow status:", error);
+        }
+    };
+    useEffect(() => {
         fetchFollow();
     }, [userId]);
 
-    const handleFollow = async () => {
-        try {
-            const response = await apiV1.patch(`/follow/${userId}`, {}, {
+    const mutation = useMutation<void, Error, void>({
+        mutationFn: async () => {
+            await apiV1.patch(`/follow/${userId}`, {}, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get("token")}`
                 }
             });
-            const newFollowStatus = response.data.isFollowing;
+        },
+        onSuccess: () => {
+            setIsFollow((prev) => {
+                const newFollowStatus = !prev;
+                setButtonText(newFollowStatus ? "Following" : "Follow");
+                return newFollowStatus;
+            });
 
-            setIsFollow(newFollowStatus);
-            setButtonText(newFollowStatus ? "Following" : "Follow");
+            queryClient.invalidateQueries({ queryKey: ['user'] });
+        },
+    });
 
-            queryClient.invalidateQueries(['user', userId]);
-            queryClient.invalidateQueries(['follow-status', userId]);
-
-        } catch (error) {
-            console.error("Error toggling follow status:", error);
-        }
+    const handleFollow = () => {
+        mutation.mutate();
     };
 
     return (

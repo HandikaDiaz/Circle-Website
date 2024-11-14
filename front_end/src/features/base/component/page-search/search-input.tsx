@@ -1,15 +1,15 @@
-import { InputLeftElement, Input, InputGroup, Box, VStack, Text, Button } from "@chakra-ui/react";
-import { RiUserSearchLine } from "react-icons/ri";
-import { useState, useEffect } from 'react';
-import { apiV1 } from "../../../../libs/api";
-import { UserEntity } from "../../../../entities/user-entity";
-import { SearchResult } from "./search-result";
+import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
+import { RiUserSearchLine } from "react-icons/ri";
+import { UserEntity } from "../../../../entities/user-entity";
+import { apiV1 } from "../../../../libs/api";
+import { SearchResult } from "./search-result";
 
 export function SearchInput() {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [result, setResult] = useState<UserEntity[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [, setLoading] = useState<boolean>(false);
     const token = Cookies.get('token');
     let userLogin = null;
     useEffect(() => {

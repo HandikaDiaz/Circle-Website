@@ -1,7 +1,5 @@
-import { Post, PrismaClient, Reply   } from "@prisma/client";
+import { Post, PrismaClient } from "@prisma/client";
 import { CreatePostDTO, UpdatePostDTO } from "../dto/post.dto";
-import { CustomError } from "../middlewares/errorHandler";
-import { log } from "console";
 
 const prisma = new PrismaClient();
 
@@ -96,12 +94,13 @@ class postService {
     };
 
     async createPost(data: CreatePostDTO, authorId: number): Promise<Post | null> {
+
         return await prisma.post.create({
             data: {
                 ...data,
                 authorId
             }
-        });
+        })
     };
 
     async updatePost(data: UpdatePostDTO): Promise<Post | null> {

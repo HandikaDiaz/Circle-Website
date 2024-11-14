@@ -80,7 +80,7 @@ export function useReplyForm() {
             queryClient.invalidateQueries({ queryKey: ['reply-post'] });
             reset();
         } catch (error) {
-            console.error("Error creating post:", error);
+            console.error("Error creating post:", error);   
         }
     };
 

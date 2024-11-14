@@ -2,6 +2,7 @@ export type CreatePostDTO = {
     authorId: number;
     content?: string;
     image?: string;
+    mainReplyId?: number
 }
 
 export type PostResponseDTO = {
@@ -11,6 +12,7 @@ export type PostResponseDTO = {
     authorId: number;
     createdAt: Date;
     updatedAt: Date;
+    mainPostId?: number
 };
 
 export type UpdatePostDTO = CreatePostDTO & {

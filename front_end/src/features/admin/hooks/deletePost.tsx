@@ -1,8 +1,7 @@
+import { Button } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { apiV1 } from "../../../libs/api";
-import { ButtonLink } from '../../base/button/link';
-import { Button } from '@chakra-ui/react';
 
 interface DeletePostButtonProps {
     postId: number;

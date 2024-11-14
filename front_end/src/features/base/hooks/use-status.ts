@@ -12,9 +12,8 @@ export function usePostDetail(postId: number) {
     }
 
     const { data: postDetail, isLoading, error } = useQuery<GetPostEntity, Error>({
-        queryKey: ['post', postId],
+        queryKey: ['post',postId],
         queryFn: getPostById,
-        enabled: postId > 0
     });
 
     return {

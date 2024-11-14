@@ -29,16 +29,16 @@ export function LoginForm() {
 
                     <Input
                         mb={'10px'}
-                        type='email'
+                        type='text'
                         width={'100%'}
                         height={'28px'}
                         display={'block'}
                         borderRadius={'5px'}
-                        {...register('email')}
+                        {...register('userName')}
                         border={'1px solid #545454'}
                         placeholder='  Email/Username'
                         backgroundColor={'transparent'} />
-                        <ErrorMessage message={errors.email?.message}/>
+                        <ErrorMessage message={errors.userName?.message}/>
 
                     <Input
                         my={'10px'}

@@ -8,7 +8,7 @@ interface FollowButtonProps {
 }
 
 const DeleteUserBtn: React.FC<FollowButtonProps> = ({ userId }) => {
-    const [isFollow, setIsFollow] = React.useState(false);
+    const [, setIsFollow] = React.useState(false);
     const [buttonText, setButtonText] = useState<string>("Follow");
 
     useEffect(() => {

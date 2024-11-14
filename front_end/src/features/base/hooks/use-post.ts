@@ -19,6 +19,7 @@ export function usePost() {
         });
     const queryClient = useQueryClient();
     const { id: authorId } = useAppSelector((state) => state.auth);
+    
     const toast = useToast();
 
     async function getPosts() {
@@ -66,7 +67,7 @@ export function usePost() {
             image: data.image,
             authorId,
         };
-
+        
         const postPromise = createPostAsync(postData);
         toast.promise(postPromise, {
             loading: {
