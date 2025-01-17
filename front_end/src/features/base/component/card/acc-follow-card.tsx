@@ -20,52 +20,65 @@ export function AccFollowCard() {
             setRandomUsers(selectedUsers);
         }
     }, [data]);
-    
+
     return (
         <>
-            {randomUsers?.map((user) => {
-                return (
-                    <Box
-                        mt={'13px'}
-                        bg={'none'}
-                        display={'flex'}
-                        alignItems={'center'}
-                        justifyContent={'space-between'}>
+            {randomUsers.length === 0 ? (
+                <Text
+                    mt="20px"
+                    textAlign="center"
+                    color="gray.500"
+                    fontSize="14px"
+                >
+                    No suggestion for you
+                </Text>
+            ) : (
+                randomUsers.map((user) => {
+                    return (
                         <Box
-                            display={'flex'}
-                            bg={'none'}
-                            alignItems={'center'} >
-                            <Image
-                                alt=''
-                                top={'115px'}
-                                left={'30px'}
-                                boxSize='40px'
-                                display={'block'}
-                                borderRadius='500px'
-                                src={user.image} />
-
-                            <ButtonLink textDecoration={'none'} state={user.id} to={`/profile-people/${user.id}`} bg={'none'}>
-                                <Text
-                                    as={'p'}
-                                    ms={'10px'}
-                                    color={'nav.text'}
-                                    fontSize={'12px'}
-                                    fontWeight={'bold'}
-                                    transition={"color 0.2s ease-in-out"}
-                                    _hover={{ color: 'nav.button.hoverText' }}>{user.fullName}
+                            key={user.id}
+                            mt="13px"
+                            bg="none"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="space-between"
+                        >
+                            <Box display="flex" bg="none" alignItems="center">
+                                <Image
+                                    alt=""
+                                    boxSize="40px"
+                                    borderRadius="full"
+                                    src={user.image}
+                                />
+                                <ButtonLink
+                                    textDecoration="none"
+                                    state={user.id}
+                                    to={`/profile-people/${user.id}`}
+                                    bg="none"
+                                >
                                     <Text
-                                        fontSize={'10px'}
-                                        color={'nav.link'}>@{user.userName}</Text>
-                                </Text>
-                            </ButtonLink>
+                                        as="p"
+                                        ms="10px"
+                                        color="nav.text"
+                                        fontSize="12px"
+                                        fontWeight="bold"
+                                        transition="color 0.2s ease-in-out"
+                                        _hover={{ color: "nav.button.hoverText" }}
+                                    >
+                                        {user.fullName}
+                                        <Text fontSize="10px" color="nav.link">
+                                            @{user.userName}
+                                        </Text>
+                                    </Text>
+                                </ButtonLink>
+                            </Box>
+                            <Box bg="none">
+                                <FollowButton userId={user.id} />
+                            </Box>
                         </Box>
-                        <Box bg={'none'}>
-                            <FollowButton userId={user.id} />
-                        </Box>
-                    </Box>
-                )
-            })
-            }
+                    );
+                })
+            )}
         </>
     )
 }

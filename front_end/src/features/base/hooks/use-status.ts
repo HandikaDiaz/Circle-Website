@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GetPostEntity } from '../../../entities/post-entity';
 import { apiV1 } from '../../../libs/api';
 
-export function usePostDetail(postId: number) {
+export function usePostDetail(postId: number | null) {
     async function getPostById() {
         const response = await apiV1.get<{ data: GetPostEntity }>(
             `/post/status/${postId}`
@@ -12,7 +12,7 @@ export function usePostDetail(postId: number) {
     }
 
     const { data: postDetail, isLoading, error } = useQuery<GetPostEntity, Error>({
-        queryKey: ['post',postId],
+        queryKey: ['posts',postId],
         queryFn: getPostById,
     });
 

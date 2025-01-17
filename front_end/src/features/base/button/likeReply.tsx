@@ -46,7 +46,6 @@ const LikeButtonReply: React.FC<LikeButtonProps> = ({ replyId }: any) => {
 
             queryClient.invalidateQueries({
                 predicate: (query) => {
-                    console.log(query.queryKey);
                     return query.queryKey[0] === 'reply' && query.queryKey[1] === +replyId
 
                 }

@@ -6,10 +6,11 @@ import { SearchNoResult } from "./search-no-result";
 
 interface SearchResultProps {
     result: UserEntity[];
+    searchQuery: string;
 }
 
-export function SearchResult({ result }: SearchResultProps) {
-    if (result.length === 0) {
+export function SearchResult({ result, searchQuery }: SearchResultProps) {
+    if (searchQuery.trim() || result.length === 0) {
         return (
             <SearchNoResult />
         );

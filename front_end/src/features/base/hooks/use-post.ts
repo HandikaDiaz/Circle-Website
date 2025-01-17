@@ -6,7 +6,7 @@ import { GetPostEntity } from '../../../entities/post-entity';
 import { apiV1 } from '../../../libs/api';
 import { useAppSelector } from '../../../store/hooks/use.store';
 import { CreatePostFormInput, postSchema } from '../schemas/post.schema';
-import { CreatePostDTO } from '../types/post.dto';
+import { CreatePostDTO, EditPostDTO } from '../types/post.dto';
 import { useToast } from '@chakra-ui/react';
 
 export function usePost() {
@@ -19,7 +19,7 @@ export function usePost() {
         });
     const queryClient = useQueryClient();
     const { id: authorId } = useAppSelector((state) => state.auth);
-    
+
     const toast = useToast();
 
     async function getPosts() {
@@ -30,7 +30,7 @@ export function usePost() {
     }
 
     const { data, isLoading } = useQuery<GetPostEntity[], Error, GetPostEntity[]>({
-        queryKey: ['post', authorId],
+        queryKey: ['posts', authorId],
         queryFn: getPosts,
     });
 
@@ -67,7 +67,7 @@ export function usePost() {
             image: data.image,
             authorId,
         };
-        
+
         const postPromise = createPostAsync(postData);
         toast.promise(postPromise, {
             loading: {
@@ -109,4 +109,85 @@ export function usePost() {
         data,
         isLoading
     };
+}
+
+export function useEditPost(postId: number | null) {
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors, isSubmitting }, } = useForm<CreatePostFormInput>({
+            resolver: zodResolver(postSchema)
+        });
+    const queryClient = useQueryClient();
+    const toast = useToast();
+
+    async function editPost(data: EditPostDTO) {
+        const formData = new FormData();
+        formData.append('content', data.content ?? '');
+        if (data.image) {
+            formData.append('image', data.image[0]);
+        }
+        const response = await apiV1.put(   
+            `/post/${postId}`, formData, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`,
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+
+        queryClient.invalidateQueries({ queryKey: ['posts'] });
+        return response.data;
+    }
+
+    const{mutateAsync: editPostAsync} = useMutation({
+        mutationKey: ['editPost'],
+        mutationFn: editPost
+    })
+
+    async function onSubmit(data: CreatePostFormInput) {
+        const postData: EditPostDTO = {
+            content: data.content,
+            image: data.image
+        };
+
+        const postPromise = editPostAsync(postData);
+        toast.promise(postPromise, {
+            loading: {
+                title: 'Creating Post',
+                description: 'Please wait...',
+                duration: 5000,
+                isClosable: true,
+            },
+            success: {
+                title: 'Post Created',
+                description: 'Your post has been created successfully!',
+                duration: 5000,
+                isClosable: true,
+            },
+            error: {
+                title: 'Post Creation Failed',
+                description: 'There was an error creating your post.',
+                duration: 5000,
+                isClosable: true,
+            },
+        });
+
+        try {
+            await postPromise;
+            queryClient.invalidateQueries({ queryKey: ['posts'] });
+            reset();
+        } catch (error) {
+            console.error("Error creating post:", error);
+        }
+    };
+
+    return {
+        register,
+        handleSubmit,
+        reset,
+        errors,
+        isSubmitting,
+        onSubmit
+    }
 }

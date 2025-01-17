@@ -3,13 +3,25 @@ import { FaComments } from "react-icons/fa";
 import LikeButtonPost from "../../base/button/likePost";
 import { ButtonLink } from "../../base/button/link";
 import { useAllPosts } from "../../base/hooks/use-all";
-import { DeletePostButton } from "../hooks/deletePost";
+import { DeletePostButton } from "../../base/button/deletePost";
+import { useEffect } from "react";
+import { useIntersection } from "@mantine/hooks";
 
 export function DeletePost() {
-    const { data, refetch } = useAllPosts();
+    const { data, fetchNextPage, refetch } = useAllPosts();
+    const { ref, entry } = useIntersection({
+        root: null,
+        threshold: 1
+    })
+
+    useEffect(() => {
+        if (entry?.isIntersecting) fetchNextPage()
+    }, [entry])
+    const _posts = data?.pages?.flatMap((page) => page) || [];
+
     return (
         <>
-            {data?.map((post) => {
+            {_posts?.map((post, index) => {
                 return (
                     <Box
                         mt={'20px'}
@@ -19,7 +31,8 @@ export function DeletePost() {
                         display={'flex'}
                         justifyContent={'center'}
                         alignItems={'center'}
-                        borderBottom={'1px solid #3F3F3F'}>
+                        borderBottom={'1px solid #3F3F3F'}
+                        ref={index === _posts.length - 1 ? ref : undefined}>
                         <Box
                             display={'flex'}>
                             <Image

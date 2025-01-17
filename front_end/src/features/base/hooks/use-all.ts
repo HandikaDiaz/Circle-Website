@@ -1,15 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import Cookies from 'js-cookie';
 import { useParams } from "react-router-dom";
-import { GetPostEntity } from '../../../entities/post-entity';
 import { ReplyEntity } from "../../../entities/repyl-entity";
 import { UserEntity } from "../../../entities/user-entity";
 import { apiV1 } from '../../../libs/api';
 
 export function useAllPosts() {
-    async function getAllPosts() {
-        const response = await apiV1.get<null, { data: GetPostEntity[] }>(
-            `/getAllPost`, {
+    async function getAllPosts({ pageParam = 1 }) {
+        const response = await apiV1.get(
+            `/getAllPost?page=${pageParam}&limit=10`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get("token")}`
             }
@@ -17,15 +16,21 @@ export function useAllPosts() {
         return response.data;
     }
 
-    const { data, isLoading, refetch } = useQuery<GetPostEntity[], Error, GetPostEntity[]>({
+    const { data, isLoading,fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery({
         queryKey: ['posts'],
         queryFn: getAllPosts,
+        initialPageParam: 1,
+        getNextPageParam: (lastPage, allPages) => {
+            return lastPage.length === 10 ? allPages.length + 1 : undefined;
+        }
     });
 
     return {
         data,
         isLoading,
         getAllPosts,
+        fetchNextPage,
+        isFetchingNextPage,
         refetch
     }
 }

@@ -1,11 +1,12 @@
 import { Box, Image, Text } from "@chakra-ui/react";
 import FollowButton from "../../button/follow";
 import { ButtonLink } from "../../button/link";
-import { useAllUsers } from "../../hooks/use-all";
+import { useFollowers } from "../../hooks/use-user";
 
 
 export function FollowItem() {
-    const { data } = useAllUsers();
+    const { data } = useFollowers();
+
     return (
         <>
             {data?.map((user) => {
@@ -27,9 +28,9 @@ export function FollowItem() {
                                 boxSize='40px'
                                 display={'block'}
                                 borderRadius='500px'
-                                src={user.image} />
+                                src={user.following.image} />
 
-                            <ButtonLink textDecoration={'none'} state={user.id} to={`/profile-people/${user.id}`} bg={'none'}>
+                            <ButtonLink textDecoration={'none'} state={user.id} to={`/profile-people/${user.followingId}`} bg={'none'}>
                                 <Text
                                     as={'p'}
                                     ms={'10px'}
@@ -37,15 +38,15 @@ export function FollowItem() {
                                     fontSize={'12px'}
                                     fontWeight={'bold'}
                                     transition={"color 0.2s ease-in-out"}
-                                    _hover={{ color: 'nav.button.hoverText' }}>{user.fullName}
+                                    _hover={{ color: 'nav.button.hoverText' }}>{user.following.fullName}
                                     <Text
                                         fontSize={'10px'}
-                                        color={'nav.link'}>@{user.userName}</Text>
+                                        color={'nav.link'}>@{user.following.userName}</Text>
                                 </Text>
                             </ButtonLink>
                         </Box>
                         <Box bg={'none'}>
-                            <FollowButton userId={user.id} />
+                            <FollowButton userId={user.followingId} />
                         </Box>
                     </Box>
                 )

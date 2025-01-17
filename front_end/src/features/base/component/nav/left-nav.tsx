@@ -108,7 +108,9 @@ export function SideLeftNavbar() {
                     gap={'5px'}
                     color={'nav.text'}
                     display={'flex'}
-                    alignItems={'center'}
+                    flexDir={'column'}
+                    height={{ base: "125px", lg: "220px" }}
+                    justifyContent={'space-between'}
                     textDecoration={'none'}>
                     <Button
                         width={'100%'}
@@ -123,22 +125,18 @@ export function SideLeftNavbar() {
                         backgroundColor={'nav.button.background'}
                         transition={'all 0.2s ease-in-out'}
                         _hover={{ backgroundColor: 'nav.button.hoverBackground', color: 'nav.button.hoverText' }}>Create Post</Button>
+                    <Text
+                        gap={'15px'}
+                        display={'flex'}
+                        color={'nav.text'}
+                        fontSize={'20px'}
+                        alignItems={'center'}
+                        textDecoration={'none'}>
+                        <TbLogout2 />
+                        <ButtonLink onClick={logout} color={'nav.text'} to={""}>Logout</ButtonLink>
+                    </Text>
                 </ListItem>
             </UnorderedList>
-
-            <Text
-                gap={'15px'}
-                display={'flex'}
-                color={'nav.text'}
-                fontSize={'20px'}
-                marginTop={'165px'}
-                marginLeft={'20px'}
-                alignItems={'center'}
-                textDecoration={'none'}>
-                <TbLogout2 />
-                <ButtonLink onClick={logout} color={'nav.text'} to={""}>Logout</ButtonLink>
-            </Text>
-
 
             <PostModal
                 isOpen={isOpen}

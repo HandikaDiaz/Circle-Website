@@ -2,13 +2,15 @@ import { Button } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { apiV1 } from "../../../libs/api";
+import { useQueryClient } from '@tanstack/react-query';
 
 interface DeletePostButtonProps {
-    postId: number;
+    postId: number | null;
     onSuccess?: () => void;
 }
 
 export function DeletePostButton({ postId, onSuccess }: DeletePostButtonProps) {
+    const queryClient = useQueryClient();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -31,6 +33,7 @@ export function DeletePostButton({ postId, onSuccess }: DeletePostButtonProps) {
         } catch (err: any) {
             setError(err.message || "An error occurred while deleting the post.");
         }
+        queryClient.invalidateQueries({ queryKey: ['posts'] });
         setIsLoading(false);
 
     };
@@ -39,7 +42,8 @@ export function DeletePostButton({ postId, onSuccess }: DeletePostButtonProps) {
         <>
             <Button
                 color={'white'}
-                colorScheme="red"
+                bgColor={'red'}
+                _hover={{ bgColor: 'transparent', color: 'red' }}
                 onClick={handleDelete}
                 position={'sticky'}>
                 {isLoading ? "Deleting..." : "Delete"}

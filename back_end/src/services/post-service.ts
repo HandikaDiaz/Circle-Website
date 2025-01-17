@@ -4,7 +4,7 @@ import { CreatePostDTO, UpdatePostDTO } from "../dto/post.dto";
 const prisma = new PrismaClient();
 
 class postService {
-    async getAllPosts(authorId: number): Promise<Post[]> {
+    async getPostByAuthor(authorId: number): Promise<Post[]> {
         const post = await prisma.post.findMany({
             where: { authorId },
             include: {
@@ -111,17 +111,17 @@ class postService {
         });
 
         const update: Partial<Post> = {};
-        if (post && data.content) {
-            post.content = data.content;
+        if (data.content) {
+            update.content = data.content;
         }
 
-        if (post && data.image) {
-            post.image = data.image;
+        if (data.image) {
+            update.image = data.image;
         }
 
         return await prisma.post.update({
-            data: update,
             where: { id: data.id },
+            data: update,
         });
     }
 
@@ -129,7 +129,7 @@ class postService {
         const post = await prisma.post.findUnique({
             where: { id },
         });
-        
+
         if (!post) {
             return null;
         }

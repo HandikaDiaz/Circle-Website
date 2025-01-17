@@ -75,7 +75,7 @@ export function SearchInput() {
                     placeholder="Search your friend"
                     onChange={(e) => setSearchQuery(e.target.value)} />
             </InputGroup>
-            <SearchResult result={result} />
+            <SearchResult result={result} searchQuery={""} />
         </>
     )
 }

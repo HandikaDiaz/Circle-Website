@@ -11,7 +11,7 @@ class followService {
             }
         });
 
-        if(follow) {
+        if (follow) {
             await prisma.follow.delete({
                 where: { id: follow.id }
             })
@@ -36,6 +36,25 @@ class followService {
             }
         });
         return { isFollowing: follow ? true : false };
+    }
+
+    async getFollowersByCurrentUserId(currentUserId: number) {
+        return await prisma.follow.findMany({
+            where: { followerId: currentUserId },
+            select: {
+                following: {
+                    select: {
+                        fullName: true,
+                        userName:true,
+                        image: true,
+                    }
+                },
+                isFollowing: true,
+                followerId: true,
+                followingId:true,
+                id: true
+            }
+        })
     }
 }
 

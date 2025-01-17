@@ -34,3 +34,16 @@ export interface UpdateUserEntity {
     updatedAt: Date;
     post: GetPostEntity[];
 }
+
+export interface Follower {
+    id: number;
+    following: Following;
+    followingId: number
+    followersId: number
+}
+
+export interface Following {
+    fullName: string;
+    image: string;
+    userName: String;
+}

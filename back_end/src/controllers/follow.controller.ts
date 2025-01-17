@@ -19,6 +19,12 @@ class FollowController {
         const followStatus = await followService.getFollowStatus(currentUserId, targetUserId);
         return res.json(followStatus);
     }
+
+    async getFollowers(req: RequestWithUser, res: Response) {
+        const currentUserId = req.user.id;
+        const followers = await followService.getFollowersByCurrentUserId(currentUserId);
+        return res.json(followers);
+    }
 }
 
 export default new FollowController()

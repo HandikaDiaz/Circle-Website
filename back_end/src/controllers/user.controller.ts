@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import UserService from '../services/user-service'
-const { PrismaClient } = require('@prisma/client');
+import { PrismaClient } from '@prisma/client';
 import { updateUserSchema } from '../utils/schema/user.schema';
 import { RequestWithUser } from '../types/post';
 import cloudinaryService from '../services/cloudinary.service';
@@ -12,7 +12,7 @@ const prisma = new PrismaClient();
 class userController {
     async getAllUser(req: RequestWithUser, res: Response) {
         const userId = req.user?.id;
-        const user = await prisma.user.findMany({
+        const users = await prisma.user.findMany({
             where: { id: { not: userId } },
             select: {
                 id: true,
@@ -29,12 +29,24 @@ class userController {
                 role: true,
                 createdAt: true,
                 updatedAt: true,
-                image: true
+                image: true,
             }
-        })
+        });
 
-        return res.json(user)
+        if (userId) {
+            const followingUsers = await prisma.follow.findMany({
+                where: { followerId: userId },
+                select: { followingId: true }
+            });
+            const followedUserIds = followingUsers.map((follow: any) => follow.followingId);
+            const usersNotFollowed = users.filter((user: any) => !followedUserIds.includes(user.id));
+
+            return res.json(usersNotFollowed);
+        }
+
+        return res.json(users);
     }
+
 
     async getUser(req: RequestWithUser, res: Response) {
         const userId = req.user.id

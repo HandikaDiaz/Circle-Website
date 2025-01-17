@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import { CustomError } from "./errorHandler";
 import { RequestWithUser } from "../types/post";
 

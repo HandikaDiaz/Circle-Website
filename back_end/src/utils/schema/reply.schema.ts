@@ -1,4 +1,4 @@
-import Joi from 'joi'
+import * as Joi from 'joi'
 import { ReplyDTO } from '../../dto/reply.dto'
 
 export const replySchema = Joi.object<ReplyDTO>({

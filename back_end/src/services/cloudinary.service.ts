@@ -1,3 +1,4 @@
+import { Multer } from "multer";
 import { v2 as cloudinary } from "cloudinary";
 
 class CloudinaryService {
@@ -9,7 +10,7 @@ class CloudinaryService {
         });
     }
     async upload(file: Express.Multer.File) {
-        const b64 = Buffer.from(file.buffer).toString("base64");
+        const b64 = file.buffer.toString("base64");
         const dataURI = "data:" + file.mimetype + ";base64," + b64;
         return await cloudinary.uploader.upload(dataURI, {
             folder: process.env.CLOUDINARY_FOLDER

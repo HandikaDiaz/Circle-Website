@@ -1,4 +1,4 @@
-import Joi from "joi";
+import * as Joi from "joi";
 import { LoginDTO, RegisterDTO } from "../../dto/auth.dto";
 
 export const registerSchema = Joi.object<RegisterDTO>({

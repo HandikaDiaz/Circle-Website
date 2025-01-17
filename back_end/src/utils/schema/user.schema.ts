@@ -1,4 +1,4 @@
-import Joi from 'joi'
+import * as Joi from 'joi'
 import { UpdateUserDTO } from '../../dto/user.dto'
 
 export const updateUserSchema = Joi.object<UpdateUserDTO>({

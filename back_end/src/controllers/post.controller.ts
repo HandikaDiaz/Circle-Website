@@ -6,11 +6,22 @@ import cloudinaryService from "../services/cloudinary.service";
 import postService from "../services/post-service";
 import { RequestWithUser } from "../types/post";
 import { postSchema } from "../utils/schema/post.schema";
+const redis = require('ioredis');
 
 const prisma = new PrismaClient();
+const client = new redis()
 
 class postController {
     async getAllPost(req: RequestWithUser, res: Response) {
+        const page = isNaN(parseInt(req.query.page || '1')) ? 1 : parseInt(req.query.page || '1');
+        const limit = isNaN(parseInt(req.query.limit || '10')) ? 10 : parseInt(req.query.limit || '10');
+        const skip = (page - 1) * limit;
+
+        const cacheKey = `posts:page:${page}:limit:${limit}`;
+        const cachedData = await client.get(cacheKey);
+        if (cachedData) {
+            return res.json(JSON.parse(cachedData));
+        }
         const posts = await prisma.post.findMany({
             include: {
                 like: true,
@@ -22,20 +33,22 @@ class postController {
                     }
                 },
             },
-            orderBy: { createdAt: 'desc' }
+            orderBy: { createdAt: 'desc' },
+            skip,
+            take: limit
         })
+
         const postWithTimeAgo = posts.map((post) => ({
             ...post,
             isLike: post.like.some((like) => like.userId === req.user.id),
-            timeAgo: formatTimeAgo(new Date(post.createdAt))
-        }))
-        
+            timeAgo: formatTimeAgo(new Date(post.createdAt)),
+        }));
         res.json(postWithTimeAgo)
     }
 
     async getPostByAuthor(req: RequestWithUser, res: Response) {
         const authorId = Number(req.params.authorId)
-        const post = await postService.getAllPosts(authorId);
+        const post = await postService.getPostByAuthor(authorId);
         const postWithTimeAgo = post.map((post) => ({
             ...post,
             likesCount: post.likesCount,
@@ -81,21 +94,27 @@ class postController {
 
     async updatePost(req: RequestWithUser, res: Response) {
         const id = Number(req.params.id);
-        const value = await postSchema.validateAsync(req.body);
+        let imageUrl: string | undefined;
+        if (req.file) {
+            const image = await cloudinaryService.upload(req.file);
+            imageUrl = image.secure_url;
+        }
+        const body = { ...req.body, ...(imageUrl && { image: imageUrl }) }
+        const value = await postSchema.validateAsync(body);
         const updatePost = await postService.updatePost({ ...value, id });
+        if (!updatePost) {
+            return res.status(404).json({ message: "Post not found" });
+        }
         res.json(updatePost)
     }
 
     async deletePost(req: RequestWithUser, res: Response) {
         const id = Number(req.params.id);
-        if (!req.user || req.user.role !== 'ADMIN') {
-            throw new CustomError("You do not have permission to delete this post", 403);
-        }
         const deletePost = await postService.deletePost(id);
         if (!deletePost) {
             throw new CustomError("Post not found", 404);
         }
-        res.json({post: deletePost});
+        res.json({ post: deletePost });
     }
 }
 

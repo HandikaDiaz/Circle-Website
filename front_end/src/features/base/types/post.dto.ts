@@ -8,3 +8,4 @@ export type CreatePostDTO = Pick<
         authorId: number;
     };
 
+export type EditPostDTO = Pick<CreatePostEntity, 'content' | 'image'>;

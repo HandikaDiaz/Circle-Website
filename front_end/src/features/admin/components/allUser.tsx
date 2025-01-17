@@ -1,7 +1,7 @@
 import { Box, Image, Text } from "@chakra-ui/react";
 import { ButtonLink } from "../../base/button/link";
 import { useAllUsers } from "../../base/hooks/use-all";
-import { DeletePostButton } from "../hooks/deletePost";
+import { DeletePostButton } from "../../base/button/deletePost";
 
 export function DeleteUser() {
     const { data } = useAllUsers();

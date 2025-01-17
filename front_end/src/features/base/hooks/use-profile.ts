@@ -15,7 +15,7 @@ export function usePostProfile() {
     }
 
     const { data, isLoading } = useQuery<GetPostEntity[], Error, GetPostEntity[]>({
-        queryKey: ['post', userId],
+        queryKey: ['posts', userId],
         queryFn: getAllPosts,
         enabled: !!userId,
     });
